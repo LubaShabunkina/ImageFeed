@@ -21,15 +21,16 @@
                                 <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                                 <color key="backgroundColor" name="YP Black"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="ImagesListCell" id="N19-OG-vaY" customClass="ImagesListCell" customModule="ImageFeed" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="50" width="393" height="1089"/>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationWidth="10" reuseIdentifier="ImagesListCell" rowHeight="224" id="N19-OG-vaY" customClass="ImagesListCell" customModule="ImageFeed" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="50" width="393" height="224"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="N19-OG-vaY" id="SfC-7J-bAh">
-                                            <rect key="frame" x="0.0" y="0.0" width="393" height="1089"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="393" height="224"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="0" translatesAutoresizingMaskIntoConstraints="NO" id="cgp-20-0Kj" userLabel="Cell Image">
-                                                    <rect key="frame" x="36" y="15" width="321" height="1059"/>
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" insetsLayoutMarginsFromSafeArea="NO" image="0" translatesAutoresizingMaskIntoConstraints="NO" id="cgp-20-0Kj" userLabel="Cell Image">
+                                                    <rect key="frame" x="16" y="4" width="361" height="216"/>
+                                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <userDefinedRuntimeAttributes>
                                                         <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
                                                             <integer key="value" value="16"/>
@@ -37,31 +38,31 @@
                                                         <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
                                                     </userDefinedRuntimeAttributes>
                                                 </imageView>
-                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="C7n-RG-ksx" userLabel="Like Button">
-                                                    <rect key="frame" x="313" y="15" width="44" height="44"/>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="C7n-RG-ksx" userLabel="Like Button">
+                                                    <rect key="frame" x="333" y="4" width="44" height="44"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="44" id="7TM-A7-pwd"/>
                                                         <constraint firstAttribute="width" constant="44" id="Qrw-cM-VNR"/>
                                                     </constraints>
-                                                    <state key="normal" title="Button"/>
-                                                    <buttonConfiguration key="configuration" style="plain" image="Active" title=""/>
+                                                    <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                                    <state key="normal" title="" image="Active"/>
                                                 </button>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vBG-FS-Cby" userLabel="Date Label">
-                                                    <rect key="frame" x="8" y="344" width="32" height="15.333333333333314"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" insetsLayoutMarginsFromSafeArea="NO" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vBG-FS-Cby" userLabel="Date Label">
+                                                    <rect key="frame" x="24" y="196" width="101.66666666666666" height="16"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                                     <color key="textColor" name="YP White"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstAttribute="trailingMargin" secondItem="cgp-20-0Kj" secondAttribute="trailing" constant="16" id="AR1-ev-q37"/>
-                                                <constraint firstAttribute="bottomMargin" secondItem="cgp-20-0Kj" secondAttribute="bottom" constant="4" id="IVc-56-b4T"/>
+                                                <constraint firstAttribute="trailing" secondItem="cgp-20-0Kj" secondAttribute="trailing" constant="16" id="AR1-ev-q37"/>
+                                                <constraint firstAttribute="bottom" secondItem="cgp-20-0Kj" secondAttribute="bottom" constant="4" id="IVc-56-b4T"/>
                                                 <constraint firstItem="cgp-20-0Kj" firstAttribute="bottom" secondItem="vBG-FS-Cby" secondAttribute="bottom" constant="8" id="OfG-Tb-7l1"/>
-                                                <constraint firstItem="cgp-20-0Kj" firstAttribute="top" secondItem="SfC-7J-bAh" secondAttribute="topMargin" constant="4" id="VVm-ah-QK3"/>
+                                                <constraint firstItem="cgp-20-0Kj" firstAttribute="top" secondItem="SfC-7J-bAh" secondAttribute="top" constant="4" id="VVm-ah-QK3"/>
                                                 <constraint firstItem="cgp-20-0Kj" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="vBG-FS-Cby" secondAttribute="trailing" constant="8" id="b3g-oQ-Vlb"/>
                                                 <constraint firstItem="vBG-FS-Cby" firstAttribute="leading" secondItem="cgp-20-0Kj" secondAttribute="leading" constant="8" id="ly4-T8-KwI"/>
                                                 <constraint firstItem="C7n-RG-ksx" firstAttribute="top" secondItem="cgp-20-0Kj" secondAttribute="top" id="sAR-yo-q1W"/>
-                                                <constraint firstItem="cgp-20-0Kj" firstAttribute="leading" secondItem="SfC-7J-bAh" secondAttribute="leadingMargin" constant="16" id="sv2-mF-X4Y"/>
+                                                <constraint firstItem="cgp-20-0Kj" firstAttribute="leading" secondItem="SfC-7J-bAh" secondAttribute="leading" constant="16" id="sv2-mF-X4Y"/>
                                                 <constraint firstItem="cgp-20-0Kj" firstAttribute="trailing" secondItem="C7n-RG-ksx" secondAttribute="trailing" id="tna-Ew-2zj"/>
                                             </constraints>
                                         </tableViewCellContentView>
