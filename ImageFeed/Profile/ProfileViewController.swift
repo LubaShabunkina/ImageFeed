@@ -65,7 +65,6 @@ final class ProfileViewController: UIViewController {
         setupLayout()
     }
     
-    // Добавляем маску для углов в методе viewDidLayoutSubviews
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
@@ -88,18 +87,14 @@ final class ProfileViewController: UIViewController {
             // Avatar ImageView
             avatarImageView.widthAnchor.constraint(equalToConstant: 70),
             avatarImageView.heightAnchor.constraint(equalToConstant: 70),
-            avatarImageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 76),
+            avatarImageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 32),
             avatarImageView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
 
             // Name Label
-            nameLabel.widthAnchor.constraint(equalToConstant: 235),
-            nameLabel.heightAnchor.constraint(equalToConstant: 18),
             nameLabel.topAnchor.constraint(equalTo: avatarImageView.bottomAnchor, constant: 14),
             nameLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
 
             // Login Name Label
-            loginNameLabel.widthAnchor.constraint(equalToConstant: 99),
-            loginNameLabel.heightAnchor.constraint(equalToConstant: 18),
             loginNameLabel.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 8),
             loginNameLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
 

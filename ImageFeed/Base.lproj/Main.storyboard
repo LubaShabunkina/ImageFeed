@@ -147,12 +147,11 @@
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" placeholderIntrinsicWidth="414" placeholderIntrinsicHeight="414" translatesAutoresizingMaskIntoConstraints="NO" id="pQE-43-vO2">
                                 <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                                 <subviews>
-                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="0" translatesAutoresizingMaskIntoConstraints="NO" id="HtI-1A-1tE" userLabel="imageView">
-                                        <rect key="frame" x="0.0" y="0.0" width="271" height="352"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="0" translatesAutoresizingMaskIntoConstraints="NO" id="HtI-1A-1tE" userLabel="imageView">
+                                        <rect key="frame" x="-1186" y="-307" width="1600" height="1059"/>
                                     </imageView>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="34O-aE-Ze7">
-                                        <rect key="frame" x="171.66666666666666" y="785" width="50" height="50"/>
+                                        <rect key="frame" x="162" y="752" width="90" height="50"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="50" id="Zp9-kA-932"/>
                                             <constraint firstAttribute="height" constant="50" id="bkO-q5-nzr"/>
@@ -164,6 +163,13 @@
                                         </connections>
                                     </button>
                                 </subviews>
+                                <constraints>
+                                    <constraint firstItem="34O-aE-Ze7" firstAttribute="leading" secondItem="M7I-d0-hhP" secondAttribute="leading" constant="162" id="TU5-JM-u8B"/>
+                                    <constraint firstItem="M7I-d0-hhP" firstAttribute="trailing" secondItem="34O-aE-Ze7" secondAttribute="trailing" constant="162" id="m8Y-P0-pgi"/>
+                                    <constraint firstItem="M7I-d0-hhP" firstAttribute="bottom" secondItem="34O-aE-Ze7" secondAttribute="bottom" constant="50" id="xUF-Vw-DwH"/>
+                                    <constraint firstItem="M7I-d0-hhP" firstAttribute="trailing" secondItem="HtI-1A-1tE" secondAttribute="trailing" id="xzU-MK-Gch"/>
+                                    <constraint firstItem="34O-aE-Ze7" firstAttribute="top" secondItem="HtI-1A-1tE" secondAttribute="bottom" id="yE9-LO-G6f"/>
+                                </constraints>
                                 <viewLayoutGuide key="contentLayoutGuide" id="TIi-LO-feg"/>
                                 <viewLayoutGuide key="frameLayoutGuide" id="M7I-d0-hhP"/>
                             </scrollView>
