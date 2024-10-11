@@ -2,7 +2,7 @@ import UIKit
 
 final class ProfileViewController: UIViewController {
     
-    private let avatarImageView: UIImageView = {
+    private lazy var avatarImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.image = UIImage(named: "Photo")
@@ -11,19 +11,19 @@ final class ProfileViewController: UIViewController {
         return imageView
     }()
     
-    private let loginNameLabel: UILabel = {
+    private lazy var loginNameLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "@ekaterina_nov"
         label.font = UIFont.systemFont(ofSize: 13, weight: .regular)
         label.textColor = UIColor(named: "YP Gray")
         label.textAlignment = .left // Выравнивание текста
-        label.numberOfLines = 1 
+        label.numberOfLines = 1
         label.lineBreakMode = .byTruncatingTail
         return label
     }()
     
-    private let nameLabel: UILabel = {
+    private lazy var nameLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Екатерина Новикова"
@@ -32,32 +32,32 @@ final class ProfileViewController: UIViewController {
         label.textAlignment = .left
         
         let attributes: [NSAttributedString.Key: Any] = [
-                .font: UIFont.systemFont(ofSize: 23, weight: .bold),
-                .kern: -0.078 // Расстояние между буквами
-            ]
-            
-            label.attributedText = NSAttributedString(string: "Екатерина Новикова", attributes: attributes)
-            return label
+            .font: UIFont.systemFont(ofSize: 23, weight: .bold),
+            .kern: -0.078 // Расстояние между буквами
+        ]
+        
+        label.attributedText = NSAttributedString(string: "Екатерина Новикова", attributes: attributes)
+        return label
     }()
     
-    private let descriptionLabel: UILabel = {
+    private lazy var descriptionLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Hello, world!"
         label.font = UIFont.systemFont( ofSize: 13, weight: .regular)
         label.textColor = UIColor(named: "YP White")
-    
+        
         return label
     }()
     
-    private let logoutButton: UIButton = {
+    private lazy var logoutButton: UIButton = {
         let button = UIButton(type: .system)
-            button.translatesAutoresizingMaskIntoConstraints = false
-            button.setImage(UIImage(named: "Exit"), for: .normal)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setImage(UIImage(named: "Exit"), for: .normal)
         button.tintColor = UIColor(named: "YP Red")
-            button.addTarget(self, action: #selector(didTapLogoutButton), for: .touchUpInside)
-            return button
-        }()
+        button.addTarget(self, action: #selector(didTapLogoutButton), for: .touchUpInside)
+        return button
+    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -89,21 +89,19 @@ final class ProfileViewController: UIViewController {
             avatarImageView.heightAnchor.constraint(equalToConstant: 70),
             avatarImageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 32),
             avatarImageView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-
+            
             // Name Label
             nameLabel.topAnchor.constraint(equalTo: avatarImageView.bottomAnchor, constant: 14),
             nameLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-
+            
             // Login Name Label
             loginNameLabel.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 8),
             loginNameLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-
+            
             // Description Label
-            descriptionLabel.widthAnchor.constraint(equalToConstant: 77),
-            descriptionLabel.heightAnchor.constraint(equalToConstant: 18),
             descriptionLabel.topAnchor.constraint(equalTo: loginNameLabel.bottomAnchor, constant: 8),
             descriptionLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-
+            
             // Logout Button
             logoutButton.widthAnchor.constraint(equalToConstant: 24),
             logoutButton.heightAnchor.constraint(equalToConstant: 24),
