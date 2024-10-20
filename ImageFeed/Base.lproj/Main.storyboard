@@ -145,21 +145,32 @@
                                 </constraints>
                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                 <state key="normal" title="Button" image="nav_back_button"/>
+                                <connections>
+                                    <action selector="backButtonTapped:" destination="PdW-2R-7A5" eventType="touchUpInside" id="btQ-0b-PH9"/>
+                                </connections>
                             </button>
+                            <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="hTe-bK-wHI">
+                                <rect key="frame" x="0.0" y="0.0" width="393" height="4"/>
+                                <color key="progressTintColor" name="YP Black"/>
+                            </progressView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="kDY-3R-62A"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="SlD-gJ-D6U" firstAttribute="top" secondItem="AAM-H7-1su" secondAttribute="top" id="3c9-Zi-Jpc"/>
+                            <constraint firstItem="kDY-3R-62A" firstAttribute="trailing" secondItem="hTe-bK-wHI" secondAttribute="trailing" id="4TH-Be-sgb"/>
+                            <constraint firstItem="hTe-bK-wHI" firstAttribute="leading" secondItem="kDY-3R-62A" secondAttribute="leading" id="Akb-to-xCb"/>
                             <constraint firstItem="SlD-gJ-D6U" firstAttribute="leading" secondItem="AAM-H7-1su" secondAttribute="leading" id="MtK-PN-28M"/>
                             <constraint firstItem="bMT-HA-QUj" firstAttribute="leading" secondItem="kDY-3R-62A" secondAttribute="leading" id="Qds-i8-JyC"/>
                             <constraint firstAttribute="trailing" secondItem="SlD-gJ-D6U" secondAttribute="trailing" id="ReN-UQ-beu"/>
                             <constraint firstAttribute="bottom" secondItem="SlD-gJ-D6U" secondAttribute="bottom" id="a1B-JN-c8X"/>
+                            <constraint firstItem="hTe-bK-wHI" firstAttribute="top" secondItem="kDY-3R-62A" secondAttribute="top" id="fDC-Mb-LnL"/>
                             <constraint firstItem="bMT-HA-QUj" firstAttribute="top" secondItem="kDY-3R-62A" secondAttribute="top" id="kDa-AH-zkT"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="Rrs-Gf-f60"/>
                     <connections>
+                        <outlet property="progressView" destination="hTe-bK-wHI" id="PfS-4A-60G"/>
                         <outlet property="webView" destination="SlD-gJ-D6U" id="s7A-hD-TSc"/>
                     </connections>
                 </viewController>

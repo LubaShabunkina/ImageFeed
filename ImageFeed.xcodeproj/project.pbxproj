@@ -20,6 +20,7 @@
 		E3E184F12CC4371900EB9664 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3E184F02CC4371900EB9664 /* Constants.swift */; };
 		E3E184F42CC4448800EB9664 /* AuthViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3E184F32CC4448800EB9664 /* AuthViewController.swift */; };
 		E3E184F62CC44C7B00EB9664 /* WebViewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3E184F52CC44C7B00EB9664 /* WebViewViewController.swift */; };
+		E3E184F92CC5C34900EB9664 /* OAuth2Service.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3E184F82CC5C34800EB9664 /* OAuth2Service.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -57,6 +58,7 @@
 		E3E184F02CC4371900EB9664 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		E3E184F32CC4448800EB9664 /* AuthViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthViewController.swift; sourceTree = "<group>"; };
 		E3E184F52CC44C7B00EB9664 /* WebViewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewViewController.swift; sourceTree = "<group>"; };
+		E3E184F82CC5C34800EB9664 /* OAuth2Service.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuth2Service.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -125,6 +127,7 @@
 				E35B4ED92C83D84C000CE045 /* AppDelegate.swift */,
 				E35B4EDB2C83D84C000CE045 /* SceneDelegate.swift */,
 				E3E184F02CC4371900EB9664 /* Constants.swift */,
+				E3E184F72CC5C2EA00EB9664 /* New Group */,
 				E3E184F22CC4445D00EB9664 /* Auth */,
 				E34C6E612C9AF69100E2D681 /* Profile */,
 				E35DDA572C8D106900E01221 /* ImagesList */,
@@ -154,6 +157,14 @@
 				E3E184F52CC44C7B00EB9664 /* WebViewViewController.swift */,
 			);
 			path = Auth;
+			sourceTree = "<group>";
+		};
+		E3E184F72CC5C2EA00EB9664 /* New Group */ = {
+			isa = PBXGroup;
+			children = (
+				E3E184F82CC5C34800EB9664 /* OAuth2Service.swift */,
+			);
+			path = "New Group";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -291,6 +302,7 @@
 				E34C6E602C9AF40900E2D681 /* ProfileViewController.swift in Sources */,
 				E35B4EDE2C83D84C000CE045 /* ImagesListViewController.swift in Sources */,
 				E35B4EE42C83D84C000CE045 /* ImageFeed.xcdatamodeld in Sources */,
+				E3E184F92CC5C34900EB9664 /* OAuth2Service.swift in Sources */,
 				E34C6E632C9E1E7500E2D681 /* SingleImageViewController.swift in Sources */,
 				E35DDA592C8D108900E01221 /* ImagesListCell.swift in Sources */,
 				E35B4EDA2C83D84C000CE045 /* AppDelegate.swift in Sources */,
