@@ -10,18 +10,17 @@ import UIKit
 final class AuthViewController: UIViewController {
 
     @IBAction func loginButoonTapped(_ sender: UIButton) {
-        //performSegue(withIdentifier: "ShowWebView", sender: nil)
     }
     
         override func viewDidLoad() {
             super.viewDidLoad()
-            configureBackButton()  // Вызов метода настройки кнопки "Назад"
+            configureBackButton()
             
             func configureBackButton() {
-                navigationController?.navigationBar.backIndicatorImage = UIImage(named: "nav_back_button") // 1
-                navigationController?.navigationBar.backIndicatorTransitionMaskImage = UIImage(named: "nav_back_button") // 2
-                navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil) // 3
-                navigationItem.backBarButtonItem?.tintColor = UIColor(named: "ypBlack") // 4
+                navigationController?.navigationBar.backIndicatorImage = UIImage(named: "nav_back_button")
+                navigationController?.navigationBar.backIndicatorTransitionMaskImage = UIImage(named: "nav_back_button")
+                navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
+                navigationItem.backBarButtonItem?.tintColor = UIColor(named: "ypBlack")
             }
         }
 }
