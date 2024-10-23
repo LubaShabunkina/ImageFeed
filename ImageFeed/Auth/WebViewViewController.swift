@@ -124,3 +124,23 @@ private func code(from navigationAction: WKNavigationAction) -> String? {
     }
 }
 }
+
+extension AuthViewController: WebViewViewControllerDelegate {
+    func webViewViewController(_ vc: WebViewViewController, didAuthenticateWithCode code: String) {
+        vc.dismiss(animated: true) {
+            self.oauth2Service.fetchToken(with: code) { result in
+                switch result {
+                case .success(let token):
+                    print("Token received: \(token)")
+                    self.delegate?.authViewController(self, didAuthenticateWithCode: code)
+                case .failure(let error):
+                    print("Failed to fetch token: \(error.localizedDescription)")
+                }
+            }
+        }
+    }
+
+    func webViewViewControllerDidCancel(_ vc: WebViewViewController) {
+        vc.dismiss(animated: true, completion: nil)
+    }
+}

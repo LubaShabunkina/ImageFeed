@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UIKit
 
 // Структура для парсинга ответа сервера
 struct OAuthTokenResponseBody: Decodable {
@@ -28,12 +29,12 @@ final class OAuth2Service {
     static let shared = OAuth2Service()
     private init() {}
     
-    //var token: String? = nil
-    private let tokenStorage = OAuth2TokenStorage()
+    var token: String? = nil
+    let tokenStorage = OAuth2TokenStorage()
     
     func fetchToken(with code: String, completion: @escaping (Result<String, Error>) -> Void) {
         let request = makeOAuthTokenRequest(code: code)
-
+        
         let task = URLSession.shared.data(for: request) { result in
             switch result {
             case .success(let data):
@@ -53,10 +54,17 @@ final class OAuth2Service {
         }
         task.resume() // Запускаем задачу
     }
-            
-            
+    
+    func fetchAuthCode(from viewController: UIViewController, completion: @escaping (Result<String, Error>) -> Void) {
+        let webViewController = WebViewViewController()
+        webViewController.delegate = viewController as? WebViewViewControllerDelegate
+        viewController.present(webViewController, animated: true)
+    }
+    
+    
+    
     // Метод для создания запроса
-    private func makeOAuthTokenRequest(code: String) -> URLRequest {
+     func makeOAuthTokenRequest(code: String) -> URLRequest {
         let baseURL = URL(string: "https://unsplash.com")!
         let url = URL(
             string: "/oauth/token"

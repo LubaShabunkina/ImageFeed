@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="32700.99.1234" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Ek8-uh-NCs">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="32700.99.1234" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="u8l-W8-tAJ">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
@@ -100,10 +100,37 @@
             </objects>
             <point key="canvasLocation" x="950.38167938931292" y="-28.169014084507044"/>
         </scene>
+        <!--Splash View Controller-->
+        <scene sceneID="NDx-fz-bSz">
+            <objects>
+                <viewController id="u8l-W8-tAJ" customClass="SplashViewController" customModule="ImageFeed" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="4Ed-OB-dqE">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" misplaced="YES" image="splash_screen_logo" translatesAutoresizingMaskIntoConstraints="NO" id="cF9-3w-zPm">
+                                <rect key="frame" x="170.66666666666666" y="410.66666666666663" width="73" height="75"/>
+                            </imageView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="ypx-VM-Y3v"/>
+                        <color key="backgroundColor" name="YP Black"/>
+                        <constraints>
+                            <constraint firstItem="cF9-3w-zPm" firstAttribute="centerY" secondItem="4Ed-OB-dqE" secondAttribute="centerY" id="hgd-US-szQ"/>
+                            <constraint firstItem="cF9-3w-zPm" firstAttribute="centerX" secondItem="4Ed-OB-dqE" secondAttribute="centerX" id="zRX-Ra-9dF"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <segue destination="Ek8-uh-NCs" kind="presentation" identifier="ShowAuthenticationScreen" id="fLr-nC-Y1R"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="M0W-kM-K6f" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1654.1984732824426" y="-754.22535211267609"/>
+        </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="EaX-Ui-gsO">
             <objects>
-                <tabBarController id="XXD-8S-Oyt" sceneMemberID="viewController">
+                <tabBarController storyboardIdentifier="TabBarViewController" id="XXD-8S-Oyt" sceneMemberID="viewController">
                     <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="3uy-ei-ywP">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="49"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -199,11 +226,11 @@
             <objects>
                 <viewController id="32x-Xt-HAl" customClass="AuthViewController" customModule="ImageFeed" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="h6J-fC-sxq">
-                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="842"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Logo_of_Unsplash" translatesAutoresizingMaskIntoConstraints="NO" id="HkO-jX-1PU">
-                                <rect key="frame" x="166.66666666666666" y="396" width="60" height="60"/>
+                                <rect key="frame" x="166.66666666666666" y="391" width="60" height="60"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="60" id="aFZ-5O-PLn"/>
                                     <constraint firstAttribute="width" constant="60" id="g0H-Gn-dKF"/>
@@ -353,7 +380,7 @@
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Ek8-uh-NCs" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="J2e-ZF-AVY">
-                        <rect key="frame" x="0.0" y="59" width="393" height="44"/>
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="56"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
@@ -373,6 +400,7 @@
         <image name="Logo_of_Unsplash" width="60" height="60"/>
         <image name="nav_back_button" width="24" height="24"/>
         <image name="share_button" width="50" height="50"/>
+        <image name="splash_screen_logo" width="75" height="78"/>
         <image name="tab_editorial_active" width="30" height="30"/>
         <image name="tab_profile_active" width="76" height="49"/>
         <namedColor name="YP Black">

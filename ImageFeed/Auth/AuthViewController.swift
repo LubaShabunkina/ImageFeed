@@ -7,34 +7,48 @@
 
 import UIKit
 
+protocol AuthViewControllerDelegate: AnyObject {
+    func authViewController(_ vc: AuthViewController, didAuthenticateWithCode code: String)
+}
+
 final class AuthViewController: UIViewController {
+    
+    weak var delegate: AuthViewControllerDelegate?
     
     private let oauth2Service = OAuth2Service.shared
     
     @IBAction func loginButoonTapped(_ sender: UIButton) {
-        /*
-        oauth2Service.fetchToken(with: code) { result in
-            switch result {
-            case .success(let token):
-                print("Token received: \(token)")
-                // Обработайте успешную авторизацию
-            case .failure(let error):
-                print("Failed to fetch token: \(error)")
-                // Обработайте ошибку
+        
+        oauth2Service.fetchAuthCode(from: self) { [weak self] result in
+                switch result {
+                case .success(let code):
+                    // Получили код — запрашиваем токен
+                    guard let self = self else { return }
+                    self.oauth2Service.fetchAuthCode(from: self) { result in
+                        switch result {
+                        case .success(let token):
+                            print("Token received: \(token)")
+                            self.delegate?.authViewController(self, didAuthenticateWithCode: code)
+                        case .failure(let error):
+                            print("Failed to fetch token: \(error.localizedDescription)")
+                        }
+                    }
+                case .failure(let error):
+                    print("Authorization failed: \(error.localizedDescription)")
+                }
             }
-        } */
-    }
-        
-        override func viewDidLoad() {
-            super.viewDidLoad()
-            configureBackButton()
         }
-        
-        private func configureBackButton() {
-            navigationController?.navigationBar.backIndicatorImage = UIImage(named: "nav_back_button")
-            navigationController?.navigationBar.backIndicatorTransitionMaskImage = UIImage(named: "nav_back_button")
-            navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
-            navigationItem.backBarButtonItem?.tintColor = UIColor(named: "ypBlack")
-        }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        configureBackButton()
     }
     
+    private func configureBackButton() {
+        navigationController?.navigationBar.backIndicatorImage = UIImage(named: "nav_back_button")
+        navigationController?.navigationBar.backIndicatorTransitionMaskImage = UIImage(named: "nav_back_button")
+        navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
+        navigationItem.backBarButtonItem?.tintColor = UIColor(named: "ypBlack")
+    }
+}
+
