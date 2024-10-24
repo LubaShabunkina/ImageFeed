@@ -128,7 +128,7 @@ private func code(from navigationAction: WKNavigationAction) -> String? {
 extension AuthViewController: WebViewViewControllerDelegate {
     func webViewViewController(_ vc: WebViewViewController, didAuthenticateWithCode code: String) {
         vc.dismiss(animated: true) {
-            self.oauth2Service.fetchToken(with: code) { result in
+        self.oauth2Service.fetchToken(with: code) { result in
                 switch result {
                 case .success(let token):
                     print("Token received: \(token)")

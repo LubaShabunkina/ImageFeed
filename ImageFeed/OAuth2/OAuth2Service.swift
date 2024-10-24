@@ -5,7 +5,6 @@
 //  Created by Luba Shabunkina on 21/10/2024.
 //
 
-import Foundation
 import UIKit
 
 // Структура для парсинга ответа сервера
