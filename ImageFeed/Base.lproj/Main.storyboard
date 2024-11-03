@@ -104,7 +104,7 @@
         <!--Splash View Controller-->
         <scene sceneID="NDx-fz-bSz">
             <objects>
-                <viewController id="u8l-W8-tAJ" customClass="SplashViewController" customModule="ImageFeed" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="SplashViewController" id="u8l-W8-tAJ" customClass="SplashViewController" customModule="ImageFeed" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="4Ed-OB-dqE">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -121,7 +121,7 @@
                         </constraints>
                     </view>
                     <connections>
-                        <segue destination="Ek8-uh-NCs" kind="presentation" identifier="ShowAuthenticationScreen" id="fLr-nC-Y1R"/>
+                        <segue destination="Ek8-uh-NCs" kind="presentation" identifier="ShowAuthenticationScreen" modalPresentationStyle="fullScreen" id="fLr-nC-Y1R"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="M0W-kM-K6f" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -152,13 +152,13 @@
         <!--Web View View Controller-->
         <scene sceneID="SJS-Qw-wdW">
             <objects>
-                <viewController id="PdW-2R-7A5" customClass="WebViewViewController" customModule="ImageFeed" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="WebViewViewController" id="PdW-2R-7A5" customClass="WebViewViewController" customModule="ImageFeed" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="AAM-H7-1su">
-                        <rect key="frame" x="0.0" y="0.0" width="393" height="842"/>
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <wkWebView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="SlD-gJ-D6U">
-                                <rect key="frame" x="0.0" y="0.0" width="393" height="842"/>
+                            <wkWebView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="SlD-gJ-D6U" customClass="WebViewViewController" customModule="ImageFeed" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                                 <color key="backgroundColor" name="YP White"/>
                                 <wkWebViewConfiguration key="configuration">
                                     <audiovisualMediaTypes key="mediaTypesRequiringUserActionForPlayback" none="YES"/>
@@ -227,11 +227,11 @@
             <objects>
                 <viewController id="32x-Xt-HAl" customClass="AuthViewController" customModule="ImageFeed" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="h6J-fC-sxq">
-                        <rect key="frame" x="0.0" y="0.0" width="393" height="842"/>
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Logo_of_Unsplash" translatesAutoresizingMaskIntoConstraints="NO" id="HkO-jX-1PU">
-                                <rect key="frame" x="166.66666666666666" y="391" width="60" height="60"/>
+                                <rect key="frame" x="166.66666666666666" y="396" width="60" height="60"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="60" id="aFZ-5O-PLn"/>
                                     <constraint firstAttribute="width" constant="60" id="g0H-Gn-dKF"/>
@@ -256,8 +256,7 @@
                                     <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
                                 </userDefinedRuntimeAttributes>
                                 <connections>
-                                    <action selector="loginButoonTapped:" destination="32x-Xt-HAl" eventType="touchUpInside" id="3Ui-PT-kC3"/>
-                                    <segue destination="PdW-2R-7A5" kind="presentation" id="leA-i1-wTX"/>
+                                    <segue destination="PdW-2R-7A5" kind="presentation" identifier="showWebView" modalPresentationStyle="fullScreen" modalTransitionStyle="coverVertical" id="leA-i1-wTX"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -357,7 +356,7 @@
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Ek8-uh-NCs" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="J2e-ZF-AVY">
-                        <rect key="frame" x="0.0" y="0.0" width="393" height="56"/>
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>

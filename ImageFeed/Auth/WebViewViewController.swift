@@ -29,7 +29,7 @@ final class WebViewViewController: UIViewController {
     // MARK: - Overrides Methods
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        print("WebViewViewController loaded") 
         loadAuthView()
         
         webView.navigationDelegate = self
@@ -83,6 +83,11 @@ final class WebViewViewController: UIViewController {
         }
         
         let request = URLRequest(url: url)
+        guard let webView = webView else {
+            print("webView не инициализирован")
+            return
+        }
+        
         webView.load(request)
         
     }
@@ -93,8 +98,8 @@ final class WebViewViewController: UIViewController {
     }
     
     // MARK: - IB Actions
-    @IBAction func backButtonTapped(_ sender: UIButton) {
-        dismiss(animated: true, completion: nil)
+    @IBAction private func backButtonTapped(_ sender: Any?) {
+        delegate?.webViewViewControllerDidCancel(self)
     }
 }
 

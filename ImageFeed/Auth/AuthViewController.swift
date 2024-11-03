@@ -18,30 +18,21 @@ final class AuthViewController: UIViewController {
     private let oauth2Service = OAuth2Service.shared
     
     @IBAction func loginButoonTapped(_ sender: UIButton) {
+        performSegue(withIdentifier: "showWebView", sender: nil)
+    }
         
-        oauth2Service.fetchAuthCode(from: self) { [weak self] result in
-                switch result {
-                case .success(let code):
-                    // Получили код — запрашиваем токен
-                    guard let self = self else { return }
-                    self.oauth2Service.fetchAuthCode(from: self) { result in
-                        switch result {
-                        case .success(let token):
-                            print("Token received: \(token)")
-                            self.delegate?.authViewController(self, didAuthenticateWithCode: code)
-                        case .failure(let error):
-                            print("Failed to fetch token: \(error.localizedDescription)")
-                        }
-                    }
-                case .failure(let error):
-                    print("Authorization failed: \(error.localizedDescription)")
-                }
-            }
-        }
+        
     
     override func viewDidLoad() {
         super.viewDidLoad()
         configureBackButton()
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "showWebView",
+           let webVC = segue.destination as? WebViewViewController {
+            webVC.delegate = self
+        }
     }
     
     private func configureBackButton() {
@@ -55,7 +46,7 @@ final class AuthViewController: UIViewController {
 extension AuthViewController: WebViewViewControllerDelegate {
     func webViewViewController(_ vc: WebViewViewController, didAuthenticateWithCode code: String) {
         vc.dismiss(animated: true) {
-        self.oauth2Service.fetchToken(with: code) { result in
+            self.oauth2Service.fetchToken(with: code) { result in
                 switch result {
                 case .success(let token):
                     print("Token received: \(token)")
@@ -71,4 +62,3 @@ extension AuthViewController: WebViewViewControllerDelegate {
         vc.dismiss(animated: true, completion: nil)
     }
 }
-

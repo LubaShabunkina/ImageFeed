@@ -20,7 +20,7 @@ final class SplashViewController: UIViewController {
         super.viewDidAppear(animated)
         
         // Проверяем, есть ли токен
-        if let token = storage.token {
+        if storage.token != nil {
             // Если есть токен — переходим к главному экрану
             switchToTabBarController()
         } else {

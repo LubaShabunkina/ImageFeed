@@ -55,10 +55,15 @@ final class OAuth2Service {
     }
     
     func fetchAuthCode(from viewController: UIViewController, completion: @escaping (Result<String, Error>) -> Void) {
-        let webViewController = WebViewViewController()
-        webViewController.delegate = viewController as? WebViewViewControllerDelegate
-        viewController.present(webViewController, animated: true)
-    }
+            let storyboard = UIStoryboard(name: "Main", bundle: nil) 
+            let webViewController = storyboard.instantiateViewController(withIdentifier: "WebViewViewController") as! WebViewViewController
+            
+            
+            webViewController.delegate = viewController as? WebViewViewControllerDelegate
+            
+            // Предполагаем, что viewController будет present-ить webViewController
+            viewController.present(webViewController, animated: true, completion: nil)
+        }
     
     
     
