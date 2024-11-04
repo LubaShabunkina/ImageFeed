@@ -238,7 +238,7 @@
                                 </constraints>
                             </imageView>
                             <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MSK-6K-Xqe">
-                                <rect key="frame" x="16" y="724" width="382" height="48"/>
+                                <rect key="frame" x="16" y="758" width="382" height="48"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="48" id="aXX-2h-ngB"/>
                                 </constraints>
