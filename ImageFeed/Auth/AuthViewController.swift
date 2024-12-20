@@ -14,15 +14,13 @@ protocol AuthViewControllerDelegate: AnyObject {
 final class AuthViewController: UIViewController {
     
     weak var delegate: AuthViewControllerDelegate?
-    
-    private let oauth2Service = OAuth2Service.shared
+     let oauth2Service = OAuth2Service.shared
     
     @IBAction func loginButoonTapped(_ sender: UIButton) {
         performSegue(withIdentifier: "showWebView", sender: nil)
+        
     }
         
-        
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         configureBackButton()
@@ -46,7 +44,12 @@ final class AuthViewController: UIViewController {
 extension AuthViewController: WebViewViewControllerDelegate {
     func webViewViewController(_ vc: WebViewViewController, didAuthenticateWithCode code: String) {
         vc.dismiss(animated: true) {
-            self.oauth2Service.fetchToken(with: code) { result in
+            UIBlockingProgressHUD.show()
+            self.oauth2Service.fetchToken(with: code) { [weak self] result in
+                guard let self = self else { return }
+                // Скрываем индикатор после завершения
+                UIBlockingProgressHUD.dismiss()
+                
                 switch result {
                 case .success(let token):
                     print("Token received: \(token)")

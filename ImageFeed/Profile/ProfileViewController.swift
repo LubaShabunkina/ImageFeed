@@ -2,6 +2,8 @@ import UIKit
 
 final class ProfileViewController: UIViewController {
     
+    var profileService: ProfileService!
+    
     private lazy var avatarImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
@@ -109,7 +111,33 @@ final class ProfileViewController: UIViewController {
             logoutButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16)
         ])
     }
+    
     @objc private func didTapLogoutButton() {
         print("Logout tapped")
+    }
+    
+    /*private func fetchProfileData() {
+        guard let token = OAuth2TokenStorage().token else {
+            print("Token is missing")
+            return
+        }
+        
+        ProfileService.shared.fetchProfile(token) { [weak self] result in
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let profile):
+                    self?.updateProfileUI(with: profile)
+                case .failure(let error):
+                    print("Failed to fetch profile: \(error.localizedDescription)")
+                }
+            }
+        }
+    }*/
+    
+    // Метод для обновления UI
+    private func updateProfileUI(with profile: Profile) {
+        nameLabel.text = profile.name
+        loginNameLabel.text = profile.loginName
+        descriptionLabel.text = profile.bio ?? "No bio available"
     }
 }
