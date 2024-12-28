@@ -2,7 +2,7 @@ import UIKit
 
 final class ProfileViewController: UIViewController {
     
-    var profileService: ProfileService!
+    private let profileService = ProfileService.shared
     
     private lazy var avatarImageView: UIImageView = {
         let imageView = UIImageView()
@@ -61,10 +61,28 @@ final class ProfileViewController: UIViewController {
         return button
     }()
     
+    // MARK: - Initializers
+    override init(nibName: String?, bundle: Bundle?) {
+        super.init(nibName: nibName, bundle: bundle)
+        addObserver()
+    }
+    
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+        addObserver()
+    }
+    
+    deinit {
+        removeObserver()
+    }
+    
+    // MARK: - Lifecycle
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = UIColor(named: "YP Black")
         setupLayout()
+        fetchProfileData()
     }
     
     override func viewDidLayoutSubviews() {
@@ -76,6 +94,34 @@ final class ProfileViewController: UIViewController {
         let mask = CAShapeLayer()
         mask.path = path.cgPath
         avatarImageView.layer.mask = mask
+    }
+    
+    // MARK: - Notification Observers
+    private func addObserver() {
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(updateAvatar(notification:)),
+            name: ProfileImageService.didChangeNotification,
+            object: nil
+        )
+    }
+    @objc private func updateAvatar(notification: Notification) {
+        guard
+            isViewLoaded,
+            let userInfo = notification.userInfo,
+            let profileImageURL = userInfo["URL"] as? String,
+            let url = URL(string: profileImageURL)
+        else { return }
+        
+        // TODO [Sprint 11] Обновите аватар, используя Kingfisher
+    }
+    
+    private func removeObserver() {
+        NotificationCenter.default.removeObserver(
+            self,
+            name: ProfileImageService.didChangeNotification,
+            object: nil
+        )
     }
     
     private func setupLayout() {
@@ -116,23 +162,23 @@ final class ProfileViewController: UIViewController {
         print("Logout tapped")
     }
     
-    /*private func fetchProfileData() {
+    private func fetchProfileData() {
         guard let token = OAuth2TokenStorage().token else {
-            print("Token is missing")
+            print("Ошибка: токен отсутствует")
             return
         }
         
-        ProfileService.shared.fetchProfile(token) { [weak self] result in
+        profileService.fetchProfile(token) { [weak self] result in
             DispatchQueue.main.async {
                 switch result {
                 case .success(let profile):
                     self?.updateProfileUI(with: profile)
                 case .failure(let error):
-                    print("Failed to fetch profile: \(error.localizedDescription)")
+                    print("Ошибка загрузки профиля: \(error.localizedDescription)")
                 }
             }
         }
-    }*/
+    }
     
     // Метод для обновления UI
     private func updateProfileUI(with profile: Profile) {

@@ -13,6 +13,7 @@ final class SplashViewController: UIViewController {
     private let showAuthenticationScreenSegueIdentifier = "ShowAuthenticationScreen"
     private let storage = OAuth2TokenStorage()
     private let profileService = ProfileService.shared
+    private let profileImageService = ProfileImageService.shared
     private var isFetchingProfile = false
     
     override func viewDidAppear(_ animated: Bool) {
@@ -40,9 +41,12 @@ final class SplashViewController: UIViewController {
             UIBlockingProgressHUD.dismiss()
             
             switch result {
-            case .success:
-                // Если успешно, переходим на TabBarController
-                self.switchToTabBarController()
+            case .success(let profile):
+                // После успешной загрузки профиля вызываем метод для получения аватарки
+                self.profileImageService.fetchProfileImageURL(username: profile.username) { _ in
+                    // Не ждем завершения запроса, сразу переходим к TabBarController
+                    self.switchToTabBarController()
+                }
             case .failure(let error):
                 // Показываем ошибку
                 self.showAlert(with: "Ошибка", message: error.localizedDescription)
@@ -65,14 +69,12 @@ final class SplashViewController: UIViewController {
         window.rootViewController = tabBarController
     }
     
-    
     private func showAlert(with title: String, message: String) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "OK", style: .default))
         present(alert, animated: true)
     }
 }
-
 
 extension SplashViewController: AuthViewControllerDelegate {
     func authViewController(_ vc: AuthViewController, didAuthenticateWithCode code: String) {

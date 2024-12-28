@@ -47,35 +47,27 @@ final class OAuth2Service {
                 self.activeRequests[code] = [completion]
             }
         }
-        // Создаём запрос
-                guard let request = makeOAuthTokenRequest(code: code) else {
-                    complete(code: code, with: .failure(NSError(domain: "RequestError", code: 0, userInfo: [NSLocalizedDescriptionKey: "Failed to create OAuth token request."])))
-                    return
-                }
-                
-                // Выполняем запрос
         
-        let task = URLSession.shared.dataTask(with: request) { data, response, error in
-                    if let error = error {
-                        self.complete(code: code, with: .failure(error))
-                        return
-                    }
-                    
-                    guard let data = data else {
-                        self.complete(code: code, with: .failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "No data received"])))
-                        return
-                    }
-                    
-                    do {
-                        let tokenResponse = try JSONDecoder().decode(OAuthTokenResponseBody.self, from: data)
-                        self.tokenStorage.token = tokenResponse.accessToken
-                        self.complete(code: code, with: .success(tokenResponse.accessToken))
-                    } catch {
-                        self.complete(code: code, with: .failure(error))
-                    }
-                }
-                task.resume()
+        // Создаём запрос
+        guard let request = makeOAuthTokenRequest(code: code) else {
+            complete(code: code, with: .failure(NSError(domain: "RequestError", code: 0, userInfo: [NSLocalizedDescriptionKey: "Failed to create OAuth token request."])))
+            return
+        }
+        
+        // Выполняем запрос с использованием objectTask
+        let task = URLSession.shared.objectTask(for: request) { [weak self] (result: Result<OAuthTokenResponseBody, Error>) in
+            guard let self = self else { return }
+            
+            switch result {
+            case .success(let tokenResponse):
+                self.tokenStorage.token = tokenResponse.accessToken
+                self.complete(code: code, with: .success(tokenResponse.accessToken))
+            case .failure(let error):
+                self.complete(code: code, with: .failure(error))
             }
+        }
+        task.resume()
+    }
     // Завершение всех запросов для указанного кода
         private func complete(code: String, with result: Result<String, Error>) {
             queue.async(flags: .barrier) {

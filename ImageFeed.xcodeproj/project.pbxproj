@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		E312A7EC2CFB9F3F008DFE20 /* ProfileService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E312A7EB2CFB9F39008DFE20 /* ProfileService.swift */; };
 		E3162DB62D064630007EA0FF /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3162DB52D06460E007EA0FF /* TabBarController.swift */; };
+		E3162DBA2D1627EB007EA0FF /* ProfileImageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3162DB92D1627E4007EA0FF /* ProfileImageService.swift */; };
 		E34C6E602C9AF40900E2D681 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E34C6E5F2C9AF40900E2D681 /* ProfileViewController.swift */; };
 		E34C6E632C9E1E7500E2D681 /* SingleImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E34C6E622C9E1E7500E2D681 /* SingleImageViewController.swift */; };
 		E35B4EDA2C83D84C000CE045 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E35B4ED92C83D84C000CE045 /* AppDelegate.swift */; };
@@ -50,6 +51,7 @@
 /* Begin PBXFileReference section */
 		E312A7EB2CFB9F39008DFE20 /* ProfileService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileService.swift; sourceTree = "<group>"; };
 		E3162DB52D06460E007EA0FF /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
+		E3162DB92D1627E4007EA0FF /* ProfileImageService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileImageService.swift; sourceTree = "<group>"; };
 		E34C6E5F2C9AF40900E2D681 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		E34C6E622C9E1E7500E2D681 /* SingleImageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleImageViewController.swift; sourceTree = "<group>"; };
 		E35B4ED62C83D84C000CE045 /* ImageFeed.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ImageFeed.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -103,6 +105,7 @@
 		E34C6E612C9AF69100E2D681 /* Profile */ = {
 			isa = PBXGroup;
 			children = (
+				E3162DB92D1627E4007EA0FF /* ProfileImageService.swift */,
 				E312A7EB2CFB9F39008DFE20 /* ProfileService.swift */,
 				E34C6E5F2C9AF40900E2D681 /* ProfileViewController.swift */,
 			);
@@ -347,6 +350,7 @@
 				E3E184FB2CC83F8C00EB9664 /* URLSession+data.swift in Sources */,
 				E35B4EDC2C83D84C000CE045 /* SceneDelegate.swift in Sources */,
 				E3E184F42CC4448800EB9664 /* AuthViewController.swift in Sources */,
+				E3162DBA2D1627EB007EA0FF /* ProfileImageService.swift in Sources */,
 				E3E184FD2CC8536900EB9664 /* OAuth2TokenStorage.swift in Sources */,
 				E3E184F12CC4371900EB9664 /* Constants.swift in Sources */,
 			);

@@ -32,6 +32,7 @@ struct Profile {
 
 // Сервис для получения данных профиля
 final class ProfileService {
+
     static let shared = ProfileService()
     private init() {}
     private(set) var currentProfile: Profile? // Сохраняем текущий профиль
