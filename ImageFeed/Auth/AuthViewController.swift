@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Kingfisher
 
 protocol AuthViewControllerDelegate: AnyObject {
     func authViewController(_ vc: AuthViewController, didAuthenticateWithCode code: String)
@@ -14,13 +15,13 @@ protocol AuthViewControllerDelegate: AnyObject {
 final class AuthViewController: UIViewController {
     
     weak var delegate: AuthViewControllerDelegate?
-     let oauth2Service = OAuth2Service.shared
+    let oauth2Service = OAuth2Service.shared
     
     @IBAction func loginButoonTapped(_ sender: UIButton) {
         performSegue(withIdentifier: "showWebView", sender: nil)
         
     }
-        
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         configureBackButton()
@@ -39,9 +40,26 @@ final class AuthViewController: UIViewController {
         navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         navigationItem.backBarButtonItem?.tintColor = UIColor(named: "ypBlack")
     }
+    
+    private func showAlert() {
+        let alert = UIAlertController(
+            title: "Что-то пошло не так(",
+            message: "Не удалось войти в систему",
+            preferredStyle: .alert
+        )
+        let okAction = UIAlertAction(title: "Ок", style: .default, handler: nil)
+        alert.addAction(okAction)
+        present(alert, animated: true, completion: nil)
+    }
 }
 
 extension AuthViewController: WebViewViewControllerDelegate {
+    func webViewViewControllerDidCancel(_ vc: WebViewViewController) {
+        
+        vc.dismiss(animated: true, completion: nil)
+    }
+    
+    
     func webViewViewController(_ vc: WebViewViewController, didAuthenticateWithCode code: String) {
         vc.dismiss(animated: true) {
             UIBlockingProgressHUD.show()
@@ -56,12 +74,11 @@ extension AuthViewController: WebViewViewControllerDelegate {
                     self.delegate?.authViewController(self, didAuthenticateWithCode: code)
                 case .failure(let error):
                     print("Failed to fetch token: \(error.localizedDescription)")
+                    DispatchQueue.main.async {
+                        self.showAlert() // Показать алерт при ошибке
+                    }
                 }
             }
         }
-    }
-
-    func webViewViewControllerDidCancel(_ vc: WebViewViewController) {
-        vc.dismiss(animated: true, completion: nil)
     }
 }

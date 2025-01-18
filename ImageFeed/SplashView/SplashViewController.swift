@@ -12,7 +12,7 @@ final class SplashViewController: UIViewController {
     
     private let showAuthenticationScreenSegueIdentifier = "ShowAuthenticationScreen"
     private let storage = OAuth2TokenStorage()
-    private let profileService = ProfileService.shared
+    var profileService = ProfileService.shared
     private let profileImageService = ProfileImageService.shared
     private var isFetchingProfile = false
     
@@ -64,7 +64,6 @@ final class SplashViewController: UIViewController {
         let tabBarController = UIStoryboard(name: "Main", bundle: .main)
             .instantiateViewController(withIdentifier: "TabBarController") as! TabBarController
         
-        tabBarController.profileService = ProfileService.shared
         // Устанавливаем rootViewController
         window.rootViewController = tabBarController
     }
@@ -78,14 +77,16 @@ final class SplashViewController: UIViewController {
 
 extension SplashViewController: AuthViewControllerDelegate {
     func authViewController(_ vc: AuthViewController, didAuthenticateWithCode code: String) {
-        vc.dismiss(animated: true) {
-            // После успешной авторизации получаем токен
-            guard let token = self.storage.token else {
-                self.showAlert(with: "Ошибка", message: "Не удалось получить токен")
-                return
+        DispatchQueue.main.async { // Выполняем на главном потоке
+            vc.dismiss(animated: true) {
+                // После успешной авторизации получаем токен
+                guard let token = self.storage.token else {
+                    self.showAlert(with: "Ошибка", message: "Не удалось получить токен")
+                    return
+                }
+                // Загружаем профиль
+                self.fetchProfile(token)
             }
-            // Загружаем профиль
-            self.fetchProfile(token)
         }
     }
 }

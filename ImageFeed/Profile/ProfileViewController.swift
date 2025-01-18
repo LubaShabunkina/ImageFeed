@@ -1,8 +1,10 @@
 import UIKit
+import Foundation
+import Kingfisher
 
 final class ProfileViewController: UIViewController {
     
-    private let profileService = ProfileService.shared
+    var profileService = ProfileService.shared
     
     private lazy var avatarImageView: UIImageView = {
         let imageView = UIImageView()
@@ -113,9 +115,23 @@ final class ProfileViewController: UIViewController {
             let url = URL(string: profileImageURL)
         else { return }
         
-        // TODO [Sprint 11] Обновите аватар, используя Kingfisher
+        // Используем Kingfisher для загрузки изображения
+        avatarImageView.kf.setImage(
+            with: url,
+            placeholder: UIImage(named: "Photo"), // Заглушка на время загрузки
+            options: [
+                .transition(.fade(0.3)), // Анимация смены изображения
+                .cacheOriginalImage // Кэширование оригинального изображения
+            ]
+        ) { result in
+            switch result {
+            case .success:
+                print("Аватарка успешно обновлена!")
+            case .failure(let error):
+                print("Ошибка загрузки аватарки: \(error.localizedDescription)")
+            }
+        }
     }
-    
     private func removeObserver() {
         NotificationCenter.default.removeObserver(
             self,
@@ -161,6 +177,7 @@ final class ProfileViewController: UIViewController {
     @objc private func didTapLogoutButton() {
         print("Logout tapped")
     }
+    
     
     private func fetchProfileData() {
         guard let token = OAuth2TokenStorage().token else {

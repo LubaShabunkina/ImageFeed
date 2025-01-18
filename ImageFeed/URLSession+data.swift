@@ -39,23 +39,38 @@ extension URLSession {
         }
         return task
     }
-    
-func objectTask<T: Decodable>(
+    func objectTask<T: Decodable>(
         for request: URLRequest,
         completion: @escaping (Result<T, Error>) -> Void
-    ) -> URLSessionTask {
-        let decoder = JSONDecoder()
-        return data(for: request) { result in
-            switch result {
-            case .success(let data):
-                do {
-                    let decodedObject = try decoder.decode(T.self, from: data)
-                    completion(.success(decodedObject))
-                } catch {
+    ) -> URLSessionDataTask {
+        return dataTask(with: request) { data, response, error in
+            if let error = error {
+                print("[objectTask]: NetworkError - \(error.localizedDescription), request: \(request)")
+                DispatchQueue.main.async {
                     completion(.failure(error))
                 }
-            case .failure(let error):
-                completion(.failure(error))
+                return
+            }
+            
+            guard let data = data else {
+                let error = NSError(domain: "NetworkError", code: -1, userInfo: [NSLocalizedDescriptionKey: "No data received"])
+                print("[objectTask]: NetworkError - No data, request: \(request)")
+                DispatchQueue.main.async {
+                    completion(.failure(error))
+                }
+                return
+            }
+            
+            do {
+                let decodedObject = try JSONDecoder().decode(T.self, from: data)
+                DispatchQueue.main.async {
+                    completion(.success(decodedObject))
+                }
+            } catch {
+                print("[objectTask]: DecodingError - \(error.localizedDescription), data: \(String(data: data, encoding: .utf8) ?? "nil"), request: \(request)")
+                DispatchQueue.main.async {
+                    completion(.failure(error))
+                }
             }
         }
     }

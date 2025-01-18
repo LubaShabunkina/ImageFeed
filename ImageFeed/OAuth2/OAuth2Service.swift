@@ -39,35 +39,36 @@ final class OAuth2Service {
     func fetchToken(with code: String, completion: @escaping (Result<String, Error>) -> Void) {
         queue.async(flags: .barrier) {
             if self.activeRequests[code] != nil {
-                // Если запрос с этим code уже выполняется, добавляем замыкание
                 self.activeRequests[code]?.append(completion)
                 return
             } else {
-                // Инициализируем массив ожиданий для нового кода
                 self.activeRequests[code] = [completion]
             }
         }
         
-        // Создаём запрос
         guard let request = makeOAuthTokenRequest(code: code) else {
-            complete(code: code, with: .failure(NSError(domain: "RequestError", code: 0, userInfo: [NSLocalizedDescriptionKey: "Failed to create OAuth token request."])))
+            let error = NSError(domain: "RequestError", code: 0, userInfo: [NSLocalizedDescriptionKey: "Failed to create OAuth token request."])
+            print("[fetchToken]: RequestError - \(error.localizedDescription), code: \(code)")
+            complete(code: code, with: .failure(error))
             return
         }
         
-        // Выполняем запрос с использованием objectTask
-        let task = URLSession.shared.objectTask(for: request) { [weak self] (result: Result<OAuthTokenResponseBody, Error>) in
-            guard let self = self else { return }
-            
-            switch result {
-            case .success(let tokenResponse):
-                self.tokenStorage.token = tokenResponse.accessToken
-                self.complete(code: code, with: .success(tokenResponse.accessToken))
-            case .failure(let error):
-                self.complete(code: code, with: .failure(error))
-            }
+        
+    
+    // Выполняем запрос с использованием objectTask
+    let task = URLSession.shared.objectTask(for: request) { [weak self] (result: Result<OAuthTokenResponseBody, Error>) in
+        guard let self = self else { return }
+        
+        switch result {
+        case .success(let tokenResponse):
+            self.tokenStorage.token = tokenResponse.accessToken
+            self.complete(code: code, with: .success(tokenResponse.accessToken))
+        case .failure(let error):
+            self.complete(code: code, with: .failure(error))
         }
-        task.resume()
     }
+    task.resume()
+}
     // Завершение всех запросов для указанного кода
         private func complete(code: String, with result: Result<String, Error>) {
             queue.async(flags: .barrier) {
