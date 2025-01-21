@@ -16,6 +16,17 @@ final class SplashViewController: UIViewController {
     private let profileImageService = ProfileImageService.shared
     private var isFetchingProfile = false
     
+    private let logoImageView: UIImageView = {
+        let imageView = UIImageView(image: UIImage(named: "splash_screen_logo"))
+        imageView.contentMode = .scaleAspectFit
+        return imageView
+    }()
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        setupView()
+    }
+    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
@@ -24,8 +35,19 @@ final class SplashViewController: UIViewController {
             fetchProfile(token)
         } else {
             // Если токена нет, переходим на экран авторизации
-            performSegue(withIdentifier: showAuthenticationScreenSegueIdentifier, sender: nil)
+            showAuthViewController()
         }
+    }
+    
+    private func setupView() {
+        view.backgroundColor = .white
+        view.addSubview(logoImageView)
+        
+        logoImageView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            logoImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            logoImageView.centerYAnchor.constraint(equalTo: view.centerYAnchor)
+        ])
     }
     
     private func fetchProfile(_ token: String) {
@@ -55,17 +77,27 @@ final class SplashViewController: UIViewController {
     }
     
     private func switchToTabBarController() {
-        // Получаем экземпляр окна приложения
-        guard let window = UIApplication.shared.windows.first else {
-            fatalError("Invalid Configuration")
+        DispatchQueue.main.async {
+            guard let window = UIApplication.shared.windows.first else {
+                fatalError("Invalid Configuration")
+            }
+            
+            let tabBarController = UIStoryboard(name: "Main", bundle: .main)
+                .instantiateViewController(withIdentifier: "TabBarController") as! TabBarController
+            
+            window.rootViewController = tabBarController
+        }
+    }
+    
+    private func showAuthViewController() {
+        let storyboard = UIStoryboard(name: "Main", bundle: .main)
+        guard let authViewController = storyboard.instantiateViewController(withIdentifier: "AuthViewController") as? AuthViewController else {
+            fatalError("AuthViewController not found in storyboard")
         }
         
-        // Загружаем TabBarController из сториборда
-        let tabBarController = UIStoryboard(name: "Main", bundle: .main)
-            .instantiateViewController(withIdentifier: "TabBarController") as! TabBarController
-        
-        // Устанавливаем rootViewController
-        window.rootViewController = tabBarController
+        authViewController.delegate = self
+        authViewController.modalPresentationStyle = .fullScreen
+        present(authViewController, animated: true)
     }
     
     private func showAlert(with title: String, message: String) {
@@ -91,7 +123,7 @@ extension SplashViewController: AuthViewControllerDelegate {
     }
 }
 
-extension SplashViewController {
+/*extension SplashViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == showAuthenticationScreenSegueIdentifier {
             guard
@@ -107,4 +139,4 @@ extension SplashViewController {
             super.prepare(for: segue, sender: sender)
         }
     }
-}
+}*/
