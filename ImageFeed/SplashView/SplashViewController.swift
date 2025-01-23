@@ -12,7 +12,7 @@ final class SplashViewController: UIViewController {
     
     private let showAuthenticationScreenSegueIdentifier = "ShowAuthenticationScreen"
     private let storage = OAuth2TokenStorage()
-    var profileService = ProfileService.shared
+    private var profileService = ProfileService.shared
     private let profileImageService = ProfileImageService.shared
     private var isFetchingProfile = false
     
@@ -123,20 +123,3 @@ extension SplashViewController: AuthViewControllerDelegate {
     }
 }
 
-/*extension SplashViewController {
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == showAuthenticationScreenSegueIdentifier {
-            guard
-                let navigationController = segue.destination as? UINavigationController,
-                let authViewController = navigationController.viewControllers.first as? AuthViewController
-            else {
-                fatalError("Failed to prepare for \(showAuthenticationScreenSegueIdentifier)")
-            }
-            
-            // Устанавливаем делегат
-            authViewController.delegate = self
-        } else {
-            super.prepare(for: segue, sender: sender)
-        }
-    }
-}*/
