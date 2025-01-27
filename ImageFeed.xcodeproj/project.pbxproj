@@ -11,6 +11,7 @@
 		E3162DB62D064630007EA0FF /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3162DB52D06460E007EA0FF /* TabBarController.swift */; };
 		E3162DBA2D1627EB007EA0FF /* ProfileImageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3162DB92D1627E4007EA0FF /* ProfileImageService.swift */; };
 		E32295182D43A86F0021F52C /* ImagesListService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E32295172D43A86C0021F52C /* ImagesListService.swift */; };
+		E322951C2D47C3410021F52C /* Photos.swift in Sources */ = {isa = PBXBuildFile; fileRef = E322951A2D43BA7D0021F52C /* Photos.swift */; };
 		E34C6E602C9AF40900E2D681 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E34C6E5F2C9AF40900E2D681 /* ProfileViewController.swift */; };
 		E34C6E632C9E1E7500E2D681 /* SingleImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E34C6E622C9E1E7500E2D681 /* SingleImageViewController.swift */; };
 		E35B4EDA2C83D84C000CE045 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E35B4ED92C83D84C000CE045 /* AppDelegate.swift */; };
@@ -56,8 +57,8 @@
 		E3162DB52D06460E007EA0FF /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 		E3162DB92D1627E4007EA0FF /* ProfileImageService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileImageService.swift; sourceTree = "<group>"; };
 		E32295172D43A86C0021F52C /* ImagesListService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagesListService.swift; sourceTree = "<group>"; };
-		E32295192D43B43B0021F52C /* Untitled.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Untitled.swift; sourceTree = "<group>"; };
-		E322951A2D43BA7D0021F52C /* Untitled.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Untitled.swift; sourceTree = "<group>"; };
+		E32295192D43B43B0021F52C /* ImagesFeedService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagesFeedService.swift; sourceTree = "<group>"; };
+		E322951A2D43BA7D0021F52C /* Photos.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Photos.swift; sourceTree = "<group>"; };
 		E34C6E5F2C9AF40900E2D681 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		E34C6E622C9E1E7500E2D681 /* SingleImageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleImageViewController.swift; sourceTree = "<group>"; };
 		E35B4ED62C83D84C000CE045 /* ImageFeed.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ImageFeed.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -110,6 +111,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		E322951B2D43BB980021F52C /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				E322951A2D43BA7D0021F52C /* Photos.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
 		E34C6E612C9AF69100E2D681 /* Profile */ = {
 			isa = PBXGroup;
 			children = (
@@ -132,7 +141,6 @@
 		E35B4ECD2C83D84C000CE045 = {
 			isa = PBXGroup;
 			children = (
-				E322951A2D43BA7D0021F52C /* Untitled.swift */,
 				E3162DB52D06460E007EA0FF /* TabBarController.swift */,
 				E37EC6452CED37A80056E682 /* UIBlockingProgressHUD.swift */,
 				E35B4ED82C83D84C000CE045 /* ImageFeed */,
@@ -175,10 +183,11 @@
 		E35DDA572C8D106900E01221 /* ImagesList */ = {
 			isa = PBXGroup;
 			children = (
-				E32295192D43B43B0021F52C /* Untitled.swift */,
+				E32295192D43B43B0021F52C /* ImagesFeedService.swift */,
 				E32295172D43A86C0021F52C /* ImagesListService.swift */,
 				E35B4EDD2C83D84C000CE045 /* ImagesListViewController.swift */,
 				E35DDA582C8D108900E01221 /* ImagesListCell.swift */,
+				E322951B2D43BB980021F52C /* Models */,
 			);
 			path = ImagesList;
 			sourceTree = "<group>";
@@ -358,6 +367,7 @@
 				E3E184F92CC5C34900EB9664 /* OAuth2Service.swift in Sources */,
 				E3162DB62D064630007EA0FF /* TabBarController.swift in Sources */,
 				E3E184FF2CC8720500EB9664 /* SplashViewController.swift in Sources */,
+				E322951C2D47C3410021F52C /* Photos.swift in Sources */,
 				E34C6E632C9E1E7500E2D681 /* SingleImageViewController.swift in Sources */,
 				E35DDA592C8D108900E01221 /* ImagesListCell.swift in Sources */,
 				E37EC6462CED37A80056E682 /* UIBlockingProgressHUD.swift in Sources */,

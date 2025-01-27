@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import Foundation
+
 
 final class ImagesListService {
     static let didChangeNotification = Notification.Name(rawValue: "ImagesListServiceDidChange")
@@ -33,7 +33,13 @@ final class ImagesListService {
         
         isLoading = true
         currentPage += 1
-        let url = URL(string: "https://api.unsplash.com/photos?page=\(currentPage)&per_page=10")! // Замените параметры на нужные
+
+        guard var urlComponents = URLComponents(string: "https://api.unsplash.com/photos") else { return }
+        urlComponents.queryItems = [
+            URLQueryItem(name: "page", value: "\(currentPage)"),
+            URLQueryItem(name: "per_page", value: "10")
+        ]
+        guard let url = urlComponents.url else { return }
 
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
@@ -45,6 +51,11 @@ final class ImagesListService {
 
             if let error = error {
                 print("Ошибка загрузки фотографий: \(error.localizedDescription)")
+                return
+            }
+
+            if let httpResponse = response as? HTTPURLResponse, !(200...299).contains(httpResponse.statusCode) {
+                print("Ошибка HTTP: \(httpResponse.statusCode)")
                 return
             }
 
