@@ -29,7 +29,9 @@ final class ImagesListService {
         guard let token = tokenStorage.token else {
             print("Ошибка: отсутствует токен")
             return
+            
         }
+        
         
         isLoading = true
         currentPage += 1
@@ -70,7 +72,11 @@ final class ImagesListService {
                 
                 DispatchQueue.main.async {
                     self.photos.append(contentsOf: newPhotos)
-                    NotificationCenter.default.post(name: ImagesListService.didChangeNotification, object: nil)
+                    NotificationCenter.default.post(
+                        name: ImagesListService.didChangeNotification,
+                        object: nil,
+                        userInfo: ["photos": self.photos] // Передаем обновленный массив
+                    )
                 }
             } catch {
                 print("Ошибка декодирования: \(error.localizedDescription)")

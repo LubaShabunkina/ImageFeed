@@ -141,6 +141,7 @@
 		E35B4ECD2C83D84C000CE045 = {
 			isa = PBXGroup;
 			children = (
+				E322951B2D43BB980021F52C /* Models */,
 				E3162DB52D06460E007EA0FF /* TabBarController.swift */,
 				E37EC6452CED37A80056E682 /* UIBlockingProgressHUD.swift */,
 				E35B4ED82C83D84C000CE045 /* ImageFeed */,
@@ -187,7 +188,6 @@
 				E32295172D43A86C0021F52C /* ImagesListService.swift */,
 				E35B4EDD2C83D84C000CE045 /* ImagesListViewController.swift */,
 				E35DDA582C8D108900E01221 /* ImagesListCell.swift */,
-				E322951B2D43BB980021F52C /* Models */,
 			);
 			path = ImagesList;
 			sourceTree = "<group>";
