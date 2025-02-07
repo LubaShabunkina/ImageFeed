@@ -60,7 +60,7 @@ final class ImagesListService {
                 return
             }
             if let data = data, let jsonString = String(data: data, encoding: .utf8) {
-                print("Ответ от сервера: \(jsonString)")
+                //print("Ответ от сервера: \(jsonString)")
             }
             if let httpResponse = response as? HTTPURLResponse, !(200...299).contains(httpResponse.statusCode) {
                 print("Ошибка HTTP: \(httpResponse.statusCode)")

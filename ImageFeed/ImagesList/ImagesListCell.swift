@@ -30,6 +30,7 @@ final class ImagesListCell: UITableViewCell {
     @IBAction func likeButtonClicked(_ sender: UIButton) {
         delegate?.imageListCellDidTapLike(self)
     }
+    
     weak var delegate: ImagesListCellDelegate?
     
     static let reuseIdentifier = "ImagesListCell"

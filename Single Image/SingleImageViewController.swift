@@ -43,7 +43,7 @@ final class SingleImageViewController: UIViewController {
         imageView.image = image
         imageView.frame.size = image.size
         rescaleAndCenterImageInScrollView(image: image)
-        
+        updateImageViewSize()
     }
     
     @IBAction private func didTapBackButton(_ sender: Any) {
