@@ -40,6 +40,8 @@ final class ProfileService {
     private var activeRequest: Bool = false
     private let queue = DispatchQueue(label: "ProfileServiceQueue", attributes: .concurrent)
     
+    var profile: Profile?
+    
     func fetchProfile(_ token: String, completion: @escaping (Result<Profile, Error>) -> Void) {
         queue.async(flags: .barrier) {
             if self.activeRequest {

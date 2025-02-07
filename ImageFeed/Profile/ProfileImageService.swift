@@ -28,6 +28,10 @@ final class ProfileImageService {
         let small: String
     }
     
+    func clearAvatar() {
+            avatarURL = nil
+        }
+    
     func fetchProfileImageURL(username: String, _ completion: @escaping (Result<String, Error>) -> Void) {
         guard lastUsername != username else { return } // Проверяем повторный запрос
         currentTask?.cancel() // Отменяем предыдущий запрос, если он есть

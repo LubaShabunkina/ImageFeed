@@ -15,6 +15,10 @@ struct ImagesListCellModel {
     let isLiked: Bool
 }
 
+protocol ImagesListCellDelegate: AnyObject {
+    func imageListCellDidTapLike(_ cell: ImagesListCell)
+}
+
 final class ImagesListCell: UITableViewCell {
     
     @IBOutlet private weak var ImageView: UIImageView!
@@ -23,17 +27,33 @@ final class ImagesListCell: UITableViewCell {
     
     @IBOutlet private weak var likeButton: UIButton!
     
+    @IBAction func likeButtonClicked(_ sender: UIButton) {
+        delegate?.imageListCellDidTapLike(self)
+    }
+    weak var delegate: ImagesListCellDelegate?
+    
     static let reuseIdentifier = "ImagesListCell"
     
+    func setImage(with url: URL?) {
+            ImageView.kf.setImage(with: url)
+        }
+    
+    func setIsLiked(_ isLiked: Bool) {
+           likeButton.isSelected = isLiked
+       }
+   
     func configure(with model: ImagesListCellModel) {
         if let imageURL = model.imageURL {
-            ImageView.kf.setImage(with: imageURL) // Загружаем картинку из сети
+            ImageView.kf.setImage(
+                with: imageURL,
+                placeholder: UIImage(named: "placeholder"),
+                options: [.transition(.fade(0.3))]
+            )
         } else {
-            ImageView.image = nil // Если URL нет, очищаем изображение
+            ImageView.image = UIImage(named: "placeholder")
         }
         
         dateLabel.text = model.date
-        let likeButtonImage = model.isLiked ? UIImage(named: "ActiveLike") : UIImage(named: "No Active")
-        likeButton.setImage(likeButtonImage, for: .normal)
+        setIsLiked(model.isLiked)
     }
 }
