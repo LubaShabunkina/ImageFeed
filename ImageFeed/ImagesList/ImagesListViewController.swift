@@ -7,6 +7,7 @@
 
 import UIKit
 import Kingfisher
+import ProgressHUD
 
 final class ImagesListViewController: UIViewController {
     
@@ -48,31 +49,31 @@ final class ImagesListViewController: UIViewController {
     }
     
     private func updateTableView() {
-           tableView.performBatchUpdates {
-               let startIndex = max(0, photos.count - 10)
-               let newIndexPaths = (startIndex..<photos.count).map { IndexPath(row: $0, section: 0) }
-               tableView.insertRows(at: newIndexPaths, with: .automatic)
-           }
-       }
-   
-    
-   /* @objc private func updateTableViewAnimated(_ notification: Notification) {
-        guard let userInfo = notification.userInfo,
-              let newPhotos = userInfo["photos"] as? [Photo] else { return }
-        
-        let oldCount = photos.count
-        let newCount = newPhotos.count
-        
-        guard newCount > oldCount else { return }
-        
-        let indexPaths = (oldCount..<newCount).map { IndexPath(row: $0, section: 0) }
-        
         tableView.performBatchUpdates {
-            photos = newPhotos
-            tableView.insertRows(at: indexPaths, with: .automatic)
+            let startIndex = max(0, photos.count - 10)
+            let newIndexPaths = (startIndex..<photos.count).map { IndexPath(row: $0, section: 0) }
+            tableView.insertRows(at: newIndexPaths, with: .automatic)
         }
-    }*/
-
+    }
+    
+    
+    /* @objc private func updateTableViewAnimated(_ notification: Notification) {
+     guard let userInfo = notification.userInfo,
+     let newPhotos = userInfo["photos"] as? [Photo] else { return }
+     
+     let oldCount = photos.count
+     let newCount = newPhotos.count
+     
+     guard newCount > oldCount else { return }
+     
+     let indexPaths = (oldCount..<newCount).map { IndexPath(row: $0, section: 0) }
+     
+     tableView.performBatchUpdates {
+     photos = newPhotos
+     tableView.insertRows(at: indexPaths, with: .automatic)
+     }
+     }*/
+    
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == showSingleImageSegueIdentifier {
@@ -117,7 +118,7 @@ extension ImagesListViewController {
         cell.setImage(with: url)
         
         let date = photo.createdAt != nil ? dateFormatter.string(from: photo.createdAt!) : "—"
-        let isLiked = photo.isLiked
+        var isLiked = photo.isLiked
         
         // Создаем модель
         let model = ImagesListCellModel(imageURL: url, date: date, isLiked: isLiked)
@@ -155,27 +156,35 @@ extension ImagesListViewController: UITableViewDelegate {
 extension ImagesListViewController: ImagesListCellDelegate {
     
     func imageListCellDidTapLike(_ cell: ImagesListCell) {
-    
-      guard let indexPath = tableView.indexPath(for: cell) else { return }
-      let photo = photos[indexPath.row]
-      // Покажем лоадер
-     UIBlockingProgressHUD.show()
-     imagesListService.changeLike(photoId: photo.id, isLike: !photo.isLiked) { result in
-        switch result {
-        case .success:
-           // Синхронизируем массив картинок с сервисом
-           self.photos = self.imagesListService.photos
-           // Изменим индикацию лайка картинки
-           cell.setIsLiked(self.photos[indexPath.row].isLiked)
-           // Уберём лоадер
-           UIBlockingProgressHUD.dismiss()
-        case .failure:
-           // Уберём лоадер
-           UIBlockingProgressHUD.dismiss()
-           // Покажем, что что-то пошло не так
-           // TODO: Показать ошибку с использованием UIAlertController
-           }
+        guard let indexPath = tableView.indexPath(for: cell) else { return }
+        let photo = photos[indexPath.row]
+        
+        UIBlockingProgressHUD.show()
+        
+        imagesListService.changeLike(photoId: photo.id, isLike: !photo.isLiked) { result in
+            DispatchQueue.main.async {
+                UIBlockingProgressHUD.dismiss()
+                switch result {
+                case .success:
+                               // Создаем изменяемую копию фото
+                               var updatedPhoto = self.photos[indexPath.row]
+                               updatedPhoto.isLiked.toggle()
+                               
+                               // Обновляем массив
+                               self.photos[indexPath.row] = updatedPhoto
+
+                               // Изменяем индикацию лайка
+                               cell.setIsLiked(updatedPhoto.isLiked)
+
+                               // Перезагружаем ячейку
+                               self.tableView.reloadRows(at: [indexPath], with: .automatic)
+
+                           case .failure:
+                               // TODO: Показать ошибку с использованием UIAlertController
+                               break
+                }
+            }
         }
+        
     }
-    
 }

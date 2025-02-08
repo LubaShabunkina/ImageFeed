@@ -8,7 +8,7 @@ public struct Photo {
     let description: String?
     let thumbImageURL: String
     let largeImageURL: String
-    let isLiked: Bool
+    var isLiked: Bool
 }
 
 struct PhotoResult: Codable {
@@ -20,11 +20,11 @@ struct PhotoResult: Codable {
     let urls: PhotoURLs
     let likedByUser: Bool
     
-    enum CodingKeys: String, CodingKey {
+ /*   enum CodingKeys: String, CodingKey {
            case id, width, height, description, urls
            case createdAt = "created_at"
            case likedByUser = "liked_by_user"
-       }
+       }*/
 }
 
 struct PhotoURLs: Codable {
