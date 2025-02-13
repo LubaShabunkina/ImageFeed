@@ -44,7 +44,6 @@ final class ImagesListViewController: UIViewController {
             }
         }
         
-        // Загружаем первую страницу фотографий
         imagesListService.fetchPhotosNextPage()
     }
     
@@ -153,7 +152,6 @@ extension ImagesListViewController: ImagesListCellDelegate {
                     
                     self.photos[indexPath.row] = updatedPhoto
                     
-                    // Вместо reloadRows просто обновляем UI напрямую
                     cell.setIsLiked(updatedPhoto.isLiked)
                     
                 case .failure:

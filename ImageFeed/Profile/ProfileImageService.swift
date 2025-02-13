@@ -34,15 +34,13 @@ final class ProfileImageService {
     
     func fetchProfileImageURL(username: String, _ completion: @escaping (Result<String, Error>) -> Void) {
         guard lastUsername != username else { return } // Проверяем повторный запрос
-        currentTask?.cancel() // Отменяем предыдущий запрос, если он есть
+        currentTask?.cancel()
         
         lastUsername = username
         
-        guard let url = URL(string: "https://api.unsplash.com/users/\(username)") else {
-            completion(.failure(NSError(domain: "Invalid URL", code: 0, userInfo: nil)))
-            return
+        let url = Constants.userProfileURL(for: username)
             
-        }
+        
         
         var request = URLRequest(url: url)
         request.httpMethod = "GET"

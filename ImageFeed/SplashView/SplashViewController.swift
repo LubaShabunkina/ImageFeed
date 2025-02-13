@@ -31,10 +31,8 @@ final class SplashViewController: UIViewController {
         super.viewDidAppear(animated)
         
         if let token = storage.token {
-            // Если есть токен, загружаем профиль
             fetchProfile(token)
         } else {
-            // Если токена нет, переходим на экран авторизации
             showAuthViewController()
         }
     }
@@ -54,23 +52,20 @@ final class SplashViewController: UIViewController {
         guard !isFetchingProfile else { return }
         isFetchingProfile = true
         
-        // Показываем индикатор загрузки
         UIBlockingProgressHUD.show()
         
-        // Загружаем профиль
         profileService.fetchProfile(token) { [weak self] result in
             guard let self = self else { return }
             UIBlockingProgressHUD.dismiss()
             
             switch result {
             case .success(let profile):
-                // После успешной загрузки профиля вызываем метод для получения аватарки
                 self.profileImageService.fetchProfileImageURL(username: profile.username) { _ in
-                    // Не ждем завершения запроса, сразу переходим к TabBarController
+                    
                     self.switchToTabBarController()
                 }
             case .failure(let error):
-                // Показываем ошибку
+                
                 self.showAlert(with: "Ошибка", message: error.localizedDescription)
             }
         }
@@ -82,22 +77,24 @@ final class SplashViewController: UIViewController {
                 fatalError("Invalid Configuration")
             }
             
-            let tabBarController = UIStoryboard(name: "Main", bundle: .main)
-                .instantiateViewController(withIdentifier: "TabBarController") as! TabBarController
-            
-            window.rootViewController = tabBarController
+            let storyboard = UIStoryboard(name: "Main", bundle: .main)
+            if let tabBarController = storyboard.instantiateViewController(withIdentifier: "TabBarController") as? TabBarController {
+                window.rootViewController = tabBarController
+            } else {
+                self.showAlert(with: "Ошибка", message: "Не удалось загрузить главный экран")
+            }
         }
     }
     
     private func showAuthViewController() {
         let storyboard = UIStoryboard(name: "Main", bundle: .main)
-        guard let authViewController = storyboard.instantiateViewController(withIdentifier: "AuthViewController") as? AuthViewController else {
-            fatalError("AuthViewController not found in storyboard")
+        if let authViewController = storyboard.instantiateViewController(withIdentifier: "AuthViewController") as? AuthViewController {
+            authViewController.delegate = self
+            authViewController.modalPresentationStyle = .fullScreen
+            present(authViewController, animated: true)
+        } else {
+            showAlert(with: "Ошибка", message: "AuthViewController не найден")
         }
-        
-        authViewController.delegate = self
-        authViewController.modalPresentationStyle = .fullScreen
-        present(authViewController, animated: true)
     }
     
     private func showAlert(with title: String, message: String) {
@@ -109,14 +106,14 @@ final class SplashViewController: UIViewController {
 
 extension SplashViewController: AuthViewControllerDelegate {
     func authViewController(_ vc: AuthViewController, didAuthenticateWithCode code: String) {
-        DispatchQueue.main.async { // Выполняем на главном потоке
+        DispatchQueue.main.async {
             vc.dismiss(animated: true) {
-                // После успешной авторизации получаем токен
+                
                 guard let token = self.storage.token else {
                     self.showAlert(with: "Ошибка", message: "Не удалось получить токен")
                     return
                 }
-                // Загружаем профиль
+                
                 self.fetchProfile(token)
             }
         }

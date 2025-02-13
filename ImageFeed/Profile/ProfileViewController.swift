@@ -134,6 +134,7 @@ final class ProfileViewController: UIViewController {
             }
         }
     }
+    
     private func removeObserver() {
         NotificationCenter.default.removeObserver(
             self,
@@ -181,7 +182,7 @@ final class ProfileViewController: UIViewController {
     }
     
     private func showLogoutAlert() {
-    ProfileLogoutService.shared.showLogoutAlert(from: self)
+        ProfileLogoutService.shared.showLogoutAlert(from: self)
     }
     
     private func fetchProfileData() {

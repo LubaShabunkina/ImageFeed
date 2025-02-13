@@ -14,7 +14,7 @@ final class ImageFeedService {
                 return
             }
 
-            let url = URL(string: "https://api.unsplash.com/photos")! // Замените на нужный URL
+            let url = Constants.photosURL
             var request = URLRequest(url: url)
             request.httpMethod = "GET"
             request.addValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
