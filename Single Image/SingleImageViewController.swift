@@ -62,7 +62,7 @@ final class SingleImageViewController: UIViewController {
     
     private func loadImage() {
         guard let imageURL else { return }
-
+        
         UIBlockingProgressHUD.show()
         imageView.kf.setImage(with: imageURL) { [weak self] result in
             UIBlockingProgressHUD.dismiss()

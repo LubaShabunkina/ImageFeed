@@ -17,7 +17,7 @@ final class AuthViewController: UIViewController {
     weak var delegate: AuthViewControllerDelegate?
     let oauth2Service = OAuth2Service.shared
     
-    @IBAction func loginButoonTapped(_ sender: UIButton) {
+    @IBAction private func loginButoonTapped(_ sender: UIButton) {
         performSegue(withIdentifier: "showWebView", sender: nil)
         
     }

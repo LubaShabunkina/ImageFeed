@@ -21,7 +21,7 @@ final class ProfileViewController: UIViewController {
         label.text = "@ekaterina_nov"
         label.font = UIFont.systemFont(ofSize: 13, weight: .regular)
         label.textColor = UIColor(named: "YP Gray")
-        label.textAlignment = .left // Выравнивание текста
+        label.textAlignment = .left
         label.numberOfLines = 1
         label.lineBreakMode = .byTruncatingTail
         return label
@@ -37,7 +37,7 @@ final class ProfileViewController: UIViewController {
         
         let attributes: [NSAttributedString.Key: Any] = [
             .font: UIFont.systemFont(ofSize: 23, weight: .bold),
-            .kern: -0.078 // Расстояние между буквами
+            .kern: -0.078
         ]
         
         label.attributedText = NSAttributedString(string: "Екатерина Новикова", attributes: attributes)
@@ -64,6 +64,7 @@ final class ProfileViewController: UIViewController {
     }()
     
     // MARK: - Initializers
+    
     override init(nibName: String?, bundle: Bundle?) {
         super.init(nibName: nibName, bundle: bundle)
         addObserver()
@@ -99,6 +100,7 @@ final class ProfileViewController: UIViewController {
     }
     
     // MARK: - Notification Observers
+    
     private func addObserver() {
         NotificationCenter.default.addObserver(
             self,
@@ -107,6 +109,7 @@ final class ProfileViewController: UIViewController {
             object: nil
         )
     }
+    
     @objc private func updateAvatar(notification: Notification) {
         guard
             isViewLoaded,
@@ -115,13 +118,12 @@ final class ProfileViewController: UIViewController {
             let url = URL(string: profileImageURL)
         else { return }
         
-        // Используем Kingfisher для загрузки изображения
         avatarImageView.kf.setImage(
             with: url,
-            placeholder: UIImage(named: "Photo"), // Заглушка на время загрузки
+            placeholder: UIImage(named: "placeholder"),
             options: [
-                .transition(.fade(0.3)), // Анимация смены изображения
-                .cacheOriginalImage // Кэширование оригинального изображения
+                .transition(.fade(0.3)),
+                .cacheOriginalImage 
             ]
         ) { result in
             switch result {
@@ -175,9 +177,12 @@ final class ProfileViewController: UIViewController {
     }
     
     @objc private func didTapLogoutButton() {
-        print("Logout tapped")
+        showLogoutAlert()
     }
     
+    private func showLogoutAlert() {
+    ProfileLogoutService.shared.showLogoutAlert(from: self)
+    }
     
     private func fetchProfileData() {
         guard let token = OAuth2TokenStorage().token else {

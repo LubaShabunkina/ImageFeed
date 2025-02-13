@@ -27,34 +27,35 @@ final class ImagesListCell: UITableViewCell {
     
     @IBOutlet private weak var likeButton: UIButton!
     
-    @IBAction func likeButtonClicked(_ sender: UIButton) {
+    @IBAction private func likeButtonClicked(_ sender: UIButton) {
         delegate?.imageListCellDidTapLike(self)
     }
     
     weak var delegate: ImagesListCellDelegate?
     
     static let reuseIdentifier = "ImagesListCell"
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        
+        likeButton.setImage(UIImage(named: "NoActive"), for: .normal)  
+        likeButton.setImage(UIImage(named: "ActiveLike"), for: .selected)
+    }
     
     func setImage(with url: URL?) {
-            ImageView.kf.setImage(with: url)
-        }
+        ImageView.kf.setImage(
+            with: url,
+            placeholder: UIImage(named: "placeholder"),
+            options: [.transition(.fade(0.3))]
+        )
+    }
     
     func setIsLiked(_ isLiked: Bool) {
-           likeButton.isSelected = isLiked
-       }
-   
-    func configure(with model: ImagesListCellModel) {
-        if let imageURL = model.imageURL {
-            ImageView.kf.setImage(
-                with: imageURL,
-                placeholder: UIImage(named: "placeholder"),
-                options: [.transition(.fade(0.3))]
-            )
-        } else {
-            ImageView.image = UIImage(named: "placeholder")
-        }
-        
-        dateLabel.text = model.date
-        setIsLiked(model.isLiked)
+        likeButton.isSelected = isLiked
     }
-}
+        func configure(with model: ImagesListCellModel) {
+            setImage(with: model.imageURL)
+            dateLabel.text = model.date
+            setIsLiked(model.isLiked)
+        }
+    }
+

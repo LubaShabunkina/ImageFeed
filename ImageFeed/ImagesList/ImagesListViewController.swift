@@ -49,31 +49,17 @@ final class ImagesListViewController: UIViewController {
     }
     
     private func updateTableView() {
-        tableView.performBatchUpdates {
-            let startIndex = max(0, photos.count - 10)
-            let newIndexPaths = (startIndex..<photos.count).map { IndexPath(row: $0, section: 0) }
+        let oldCount = tableView.numberOfRows(inSection: 0)
+        let newCount = photos.count
+        
+        guard newCount > oldCount else { return }
+        
+        let newIndexPaths = (oldCount..<newCount).map { IndexPath(row: $0, section: 0) }
+        
+        tableView.performBatchUpdates({
             tableView.insertRows(at: newIndexPaths, with: .automatic)
-        }
+        }, completion: nil)
     }
-    
-    
-    /* @objc private func updateTableViewAnimated(_ notification: Notification) {
-     guard let userInfo = notification.userInfo,
-     let newPhotos = userInfo["photos"] as? [Photo] else { return }
-     
-     let oldCount = photos.count
-     let newCount = newPhotos.count
-     
-     guard newCount > oldCount else { return }
-     
-     let indexPaths = (oldCount..<newCount).map { IndexPath(row: $0, section: 0) }
-     
-     tableView.performBatchUpdates {
-     photos = newPhotos
-     tableView.insertRows(at: indexPaths, with: .automatic)
-     }
-     }*/
-    
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == showSingleImageSegueIdentifier {
@@ -86,7 +72,7 @@ final class ImagesListViewController: UIViewController {
             }
             
             let photo = photos[indexPath.row]
-            viewController.imageURL = URL(string: photo.largeImageURL) // Убираем `UIImage(named:)`
+            viewController.imageURL = URL(string: photo.largeImageURL)
         } else {
             super.prepare(for: segue, sender: sender)
         }
@@ -117,13 +103,9 @@ extension ImagesListViewController {
         let url = URL(string: photo.largeImageURL)
         cell.setImage(with: url)
         
-        let date = photo.createdAt != nil ? dateFormatter.string(from: photo.createdAt!) : "—"
-        var isLiked = photo.isLiked
-        
-        // Создаем модель
+        let date = photo.createdAt.map { dateFormatter.string(from: $0) } ?? "—"
+        let isLiked = photo.isLiked
         let model = ImagesListCellModel(imageURL: url, date: date, isLiked: isLiked)
-        
-        // Конфигурируем ячейку через метод
         cell.configure(with: model)
         
     }
@@ -166,25 +148,18 @@ extension ImagesListViewController: ImagesListCellDelegate {
                 UIBlockingProgressHUD.dismiss()
                 switch result {
                 case .success:
-                               // Создаем изменяемую копию фото
-                               var updatedPhoto = self.photos[indexPath.row]
-                               updatedPhoto.isLiked.toggle()
-                               
-                               // Обновляем массив
-                               self.photos[indexPath.row] = updatedPhoto
-
-                               // Изменяем индикацию лайка
-                               cell.setIsLiked(updatedPhoto.isLiked)
-
-                               // Перезагружаем ячейку
-                               self.tableView.reloadRows(at: [indexPath], with: .automatic)
-
-                           case .failure:
-                               // TODO: Показать ошибку с использованием UIAlertController
-                               break
+                    var updatedPhoto = self.photos[indexPath.row]
+                    updatedPhoto.isLiked.toggle()
+                    
+                    self.photos[indexPath.row] = updatedPhoto
+                    
+                    // Вместо reloadRows просто обновляем UI напрямую
+                    cell.setIsLiked(updatedPhoto.isLiked)
+                    
+                case .failure:
+                    break
                 }
             }
         }
-        
     }
 }
