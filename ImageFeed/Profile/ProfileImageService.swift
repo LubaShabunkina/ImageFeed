@@ -9,12 +9,12 @@ import Foundation
 
 final class ProfileImageService {
     static let didChangeNotification = Notification.Name(rawValue: "ProfileImageProviderDidChange")
-    static let shared = ProfileImageService() // Синглтон
-    private init() {} // Приватный инициализатор
+    static let shared = ProfileImageService()
+    private init() {}
     
-    private(set) var avatarURL: String? // Сохранённый URL аватарки
-    private var currentTask: URLSessionTask? // Для защиты от гонок
-    private var lastUsername: String? // Для проверки повторных запросов
+    private(set) var avatarURL: String?
+    private var currentTask: URLSessionTask?
+    private var lastUsername: String?
     
     struct UserResult: Codable {
         let profileImage: ProfileImage
@@ -33,7 +33,7 @@ final class ProfileImageService {
         }
     
     func fetchProfileImageURL(username: String, _ completion: @escaping (Result<String, Error>) -> Void) {
-        guard lastUsername != username else { return } // Проверяем повторный запрос
+        guard lastUsername != username else { return }
         currentTask?.cancel()
         
         lastUsername = username
@@ -55,7 +55,7 @@ final class ProfileImageService {
             guard let self = self else { return }
             
             defer {
-                self.currentTask = nil // Очищаем задачу
+                self.currentTask = nil 
                 self.lastUsername = nil
             }
             

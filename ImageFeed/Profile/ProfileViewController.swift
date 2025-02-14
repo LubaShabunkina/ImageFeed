@@ -86,6 +86,8 @@ final class ProfileViewController: UIViewController {
         view.backgroundColor = UIColor(named: "YP Black")
         setupLayout()
         fetchProfileData()
+        avatarImageView.layer.cornerRadius = 35
+        avatarImageView.layer.masksToBounds = true
     }
     
     override func viewDidLayoutSubviews() {
@@ -110,6 +112,7 @@ final class ProfileViewController: UIViewController {
         )
     }
     
+    
     @objc private func updateAvatar(notification: Notification) {
         guard
             isViewLoaded,
@@ -123,7 +126,7 @@ final class ProfileViewController: UIViewController {
             placeholder: UIImage(named: "placeholder"),
             options: [
                 .transition(.fade(0.3)),
-                .cacheOriginalImage 
+                .cacheOriginalImage
             ]
         ) { result in
             switch result {
@@ -131,6 +134,8 @@ final class ProfileViewController: UIViewController {
                 print("Аватарка успешно обновлена!")
             case .failure(let error):
                 print("Ошибка загрузки аватарки: \(error.localizedDescription)")
+                
+                print("Получено уведомление об обновлении аватарки:", notification.userInfo ?? "пустой userInfo")
             }
         }
     }
@@ -196,6 +201,10 @@ final class ProfileViewController: UIViewController {
                 switch result {
                 case .success(let profile):
                     self?.updateProfileUI(with: profile)
+                    
+                    // После успешной загрузки профиля запрашиваем URL аватарки
+                    self?.fetchProfileImageURL(for: profile.username)
+                    
                 case .failure(let error):
                     print("Ошибка загрузки профиля: \(error.localizedDescription)")
                 }
@@ -203,10 +212,38 @@ final class ProfileViewController: UIViewController {
         }
     }
     
-    // Метод для обновления UI
+    
     private func updateProfileUI(with profile: Profile) {
         nameLabel.text = profile.name
         loginNameLabel.text = profile.loginName
         descriptionLabel.text = profile.bio ?? "No bio available"
+        
+        if let avatarURL = ProfileImageService.shared.avatarURL {
+            updateAvatar(with: avatarURL)
+        }
+    }
+    
+    
+    private func fetchProfileImageURL(for username: String) {
+        ProfileImageService.shared.fetchProfileImageURL(username: username) { [weak self] result in
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let imageURL):
+                    self?.updateAvatar(with: imageURL)
+                case .failure(let error):
+                    print("Ошибка загрузки аватарки: \(error.localizedDescription)")
+                }
+            }
+        }
+    }
+    
+    private func updateAvatar(with urlString: String) {
+        guard let url = URL(string: urlString) else { return }
+        avatarImageView.kf.setImage(
+            with: url,
+            placeholder: UIImage(named: "placeholder"),
+            options: [.transition(.fade(0.3)), .cacheOriginalImage]
+        )
     }
 }
+

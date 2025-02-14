@@ -60,6 +60,7 @@ final class ImagesListViewController: UIViewController {
         }, completion: nil)
     }
     
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == showSingleImageSegueIdentifier {
             guard
@@ -138,26 +139,11 @@ extension ImagesListViewController: ImagesListCellDelegate {
     
     func imageListCellDidTapLike(_ cell: ImagesListCell) {
         guard let indexPath = tableView.indexPath(for: cell) else { return }
-        let photo = photos[indexPath.row]
         
-        UIBlockingProgressHUD.show()
+        var photo = photos[indexPath.row]
+        photo.isLiked.toggle()
         
-        imagesListService.changeLike(photoId: photo.id, isLike: !photo.isLiked) { result in
-            DispatchQueue.main.async {
-                UIBlockingProgressHUD.dismiss()
-                switch result {
-                case .success:
-                    var updatedPhoto = self.photos[indexPath.row]
-                    updatedPhoto.isLiked.toggle()
-                    
-                    self.photos[indexPath.row] = updatedPhoto
-                    
-                    cell.setIsLiked(updatedPhoto.isLiked)
-                    
-                case .failure:
-                    break
-                }
-            }
-        }
+        photos[indexPath.row] = photo
+        cell.setIsLiked(photo.isLiked)
     }
 }
