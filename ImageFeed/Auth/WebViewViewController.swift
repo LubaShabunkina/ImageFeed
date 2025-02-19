@@ -8,8 +8,13 @@
 import UIKit
 @preconcurrency import WebKit
 
-enum WebViewConstants {
+/*enum WebViewConstants {
     static let unsplashAuthorizeURLString = "https://unsplash.com/oauth/authorize"
+}*/
+public protocol WebViewViewControllerProtocol: AnyObject {
+    var presenter: WebViewPresenterProtocol? { get set }
+    
+        func load(request: URLRequest)
 }
 
 protocol WebViewViewControllerDelegate: AnyObject {
@@ -17,9 +22,12 @@ protocol WebViewViewControllerDelegate: AnyObject {
     func webViewViewControllerDidCancel(_ vc: WebViewViewController)
 }
 
-final class WebViewViewController: UIViewController {
+final class WebViewViewController: UIViewController, WebViewViewControllerProtocol {
     
     weak var delegate: WebViewViewControllerDelegate?
+    //private let webViewHelper: WebViewHelperProtocol
+    var presenter: WebViewPresenterProtocol?
+    
     
     // MARK: - IB Outlets
     @IBOutlet weak var webView: WKWebView!
@@ -29,13 +37,37 @@ final class WebViewViewController: UIViewController {
     // MARK: - KVO Observation
     private var estimatedProgressObservation: NSKeyValueObservation?
     
+    // MARK: - Инициализация
+    
+    init(presenter: WebViewPresenterProtocol) {
+        self.presenter = presenter
+        super.init(nibName: nil, bundle: nil)
+        self.presenter?.view = self
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    /*   init(webViewHelper: WebViewHelperProtocol = WebViewHelper()) {
+           self.webViewHelper = webViewHelper
+           super.init(nibName: nil, bundle: nil)
+       }
+    
+    required init?(coder: NSCoder) {
+            self.webViewHelper = WebViewHelper() // <-- По умолчанию используем обычный WebViewHelper
+            super.init(coder: coder)
+        }
+     */
     // MARK: - Overrides Methods
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         print("WebViewViewController loaded")
-        loadAuthView()
-        
+        //loadAuthView()
         webView.navigationDelegate = self
+        presenter?.viewDidLoad()
+        updateProgress()
         
         // Настройка KVO для наблюдения за estimatedProgress
                 estimatedProgressObservation = webView.observe(
@@ -54,31 +86,21 @@ final class WebViewViewController: UIViewController {
     
     // MARK: - Private Methods
     
-    private func loadAuthView() {
-        guard var urlComponents = URLComponents(string: Constants.authURL) else {
-            print("Ошибка: не удалось создать URLComponents из строки URL.")
-            return
-        }
-        
-        urlComponents.queryItems = [
-            URLQueryItem(name: "client_id", value: Constants.accessKey),
-            URLQueryItem(name: "redirect_uri", value: Constants.redirectURI),
-            URLQueryItem(name: "response_type", value: "code"),
-            URLQueryItem(name: "scope", value: Constants.accessScope)
-        ]
-        
-        guard let url = urlComponents.url else {
-            print("Ошибка: не удалось получить URL из URLComponents.")
-            return
-        }
-        
-        let request = URLRequest(url: url)
-        webView.load(request)
-    }
+   /* private func loadAuthView() {
+            guard let request = webViewHelper.makeAuthRequest() else {
+                print("Ошибка: не удалось создать запрос авторизации.")
+                return
+            }
+            webView.load(request)
+        }*/
     
     private func updateProgress() {
         progressView.progress = Float(webView.estimatedProgress)
         progressView.isHidden = fabs(webView.estimatedProgress - 1.0) <= 0.0001
+    }
+    
+    func load(request: URLRequest) {
+        webView.load(request)
     }
     
     

@@ -7,6 +7,7 @@
 
 import UIKit
 import Kingfisher
+import ProgressHUD
 
 protocol AuthViewControllerDelegate: AnyObject {
     func authViewController(_ vc: AuthViewController, didAuthenticateWithCode code: String)
@@ -28,11 +29,21 @@ final class AuthViewController: UIViewController {
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "showWebView",
-           let webVC = segue.destination as? WebViewViewController {
-            webVC.delegate = self
-        }
-    }
+        if segue.identifier == "showWebView" {
+               guard
+                   let webViewViewController = segue.destination as? WebViewViewController
+               else {
+                   assertionFailure("Failed to prepare for \("showWebView")")
+                   return
+               }
+               let webViewPresenter = WebViewPresenter()
+               webViewViewController.presenter = webViewPresenter
+               webViewPresenter.view = webViewViewController
+               webViewViewController.delegate = self
+           } else {
+               super.prepare(for: segue, sender: sender)
+           }
+       }
     
     private func configureBackButton() {
         navigationController?.navigationBar.backIndicatorImage = UIImage(named: "nav_back_button")
