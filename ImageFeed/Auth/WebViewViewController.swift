@@ -1,3 +1,4 @@
+
 //
 //  WebViewViewController.swift
 //  ImageFeed
@@ -15,6 +16,8 @@ public protocol WebViewViewControllerProtocol: AnyObject {
     var presenter: WebViewPresenterProtocol? { get set }
     
         func load(request: URLRequest)
+        func setProgressValue(_ newValue: Float)
+        func setProgressHidden(_ isHidden: Bool)
 }
 
 protocol WebViewViewControllerDelegate: AnyObject {
@@ -67,14 +70,14 @@ final class WebViewViewController: UIViewController, WebViewViewControllerProtoc
         //loadAuthView()
         webView.navigationDelegate = self
         presenter?.viewDidLoad()
-        updateProgress()
+        //updateProgress()
         
         // Настройка KVO для наблюдения за estimatedProgress
                 estimatedProgressObservation = webView.observe(
                     \.estimatedProgress,
                     options: [],
                     changeHandler: { [weak self] _, _ in
-                        self?.updateProgress()
+                     // self?.updateProgress()
                     }
                 )
             }
@@ -94,9 +97,16 @@ final class WebViewViewController: UIViewController, WebViewViewControllerProtoc
             webView.load(request)
         }*/
     
-    private func updateProgress() {
+  /*  private func updateProgress() {
         progressView.progress = Float(webView.estimatedProgress)
         progressView.isHidden = fabs(webView.estimatedProgress - 1.0) <= 0.0001
+    }*/
+    func setProgressValue(_ newValue: Float) {
+        progressView.progress = newValue
+    }
+
+    func setProgressHidden(_ isHidden: Bool) {
+        progressView.isHidden = isHidden
     }
     
     func load(request: URLRequest) {
@@ -125,6 +135,12 @@ extension WebViewViewController: WKNavigationDelegate {
     }
     
     private func code(from navigationAction: WKNavigationAction) -> String? {
+        if let url = navigationAction.request.url {
+            return presenter?.code(from: url)
+        }
+        return nil
+    }
+   /* private func code(from navigationAction: WKNavigationAction) -> String? {
         if
             let url = navigationAction.request.url,
             let urlComponents = URLComponents(string: url.absoluteString),
@@ -136,5 +152,5 @@ extension WebViewViewController: WKNavigationDelegate {
         } else {
             return nil
         }
-    }
+    }*/
 }
