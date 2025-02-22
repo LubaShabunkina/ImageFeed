@@ -2,16 +2,35 @@ import UIKit
 import Foundation
 import Kingfisher
 
-final class ProfileViewController: UIViewController {
-    
-    var profileService = ProfileService.shared
-    
+protocol ProfileViewControllerProtocol: AnyObject {
+    func updateProfile(with profile: Profile)
+    func updateAvatar(with urlString: String)
+}
+
+final class ProfileViewController: UIViewController, ProfileViewControllerProtocol {
+   //private let presenter: ProfilePresenterProtocol = ProfilePresenter()
+    //var profileService = ProfileService.shared
+    private var presenter: ProfilePresenterProtocol!
+       
+     /*  init(presenter: ProfilePresenterProtocol) {
+           self.presenter = presenter
+           super.init(nibName: nil, bundle: nil)
+       }
+       
+       required init?(coder: NSCoder) {
+           fatalError("init(coder:) has not been implemented")*/
+    func configure(_ presenter: ProfilePresenterProtocol) {
+            self.presenter = presenter
+            presenter.view = self
+        }
+   
     private lazy var avatarImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.image = UIImage(named: "Photo")
         imageView.contentMode = .scaleAspectFill
         imageView.clipsToBounds = true
+        imageView.layer.cornerRadius = 35
         return imageView
     }()
     
@@ -63,6 +82,29 @@ final class ProfileViewController: UIViewController {
         return button
     }()
     
+    // MARK: - Lifecycle
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        view.backgroundColor = UIColor(named: "YP Black")
+        setupLayout()
+        //fetchProfileData()
+        //avatarImageView.layer.cornerRadius = 35
+        avatarImageView.layer.masksToBounds = true
+        assert(presenter != nil, "ProfilePresenter не был сконфигурирован")
+        presenter?.viewDidLoad()
+    }
+    
+   /*/ override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        
+        let path = UIBezierPath(roundedRect: avatarImageView.bounds,
+                                byRoundingCorners: [.topLeft],
+                                cornerRadii: CGSize(width: 61, height: 61))
+        let mask = CAShapeLayer()
+        mask.path = path.cgPath
+        avatarImageView.layer.mask = mask
+    }*/
     // MARK: - Initializers
     
     override init(nibName: String?, bundle: Bundle?) {
@@ -79,31 +121,11 @@ final class ProfileViewController: UIViewController {
         removeObserver()
     }
     
-    // MARK: - Lifecycle
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        view.backgroundColor = UIColor(named: "YP Black")
-        setupLayout()
-        fetchProfileData()
-        avatarImageView.layer.cornerRadius = 35
-        avatarImageView.layer.masksToBounds = true
-    }
-    
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        
-        let path = UIBezierPath(roundedRect: avatarImageView.bounds,
-                                byRoundingCorners: [.topLeft],
-                                cornerRadii: CGSize(width: 61, height: 61))
-        let mask = CAShapeLayer()
-        mask.path = path.cgPath
-        avatarImageView.layer.mask = mask
-    }
+   
     
     // MARK: - Notification Observers
     
-    private func addObserver() {
+      private func addObserver() {
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(updateAvatar(notification:)),
@@ -237,7 +259,7 @@ final class ProfileViewController: UIViewController {
         }
     }
     
-    private func updateAvatar(with urlString: String) {
+    internal func updateAvatar(with urlString: String) {
         guard let url = URL(string: urlString) else { return }
         avatarImageView.kf.setImage(
             with: url,
