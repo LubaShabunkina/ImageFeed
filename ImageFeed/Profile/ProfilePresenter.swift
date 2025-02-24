@@ -1,5 +1,6 @@
 
 import Foundation
+import UIKit
 
 protocol ProfilePresenterProtocol {
     var view: ProfileViewControllerProtocol? { get set }
@@ -57,6 +58,9 @@ final class ProfilePresenter: ProfilePresenterProtocol {
     }
     
     func didTapLogout() {
-        ProfileLogoutService.shared.showLogoutAlert()
+        if let viewController = view as? UIViewController {
+            ProfileLogoutService.shared.showLogoutAlert(from: viewController)
+        }
     }
 }
+

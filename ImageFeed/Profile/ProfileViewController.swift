@@ -3,14 +3,14 @@ import Foundation
 import Kingfisher
 
 protocol ProfileViewControllerProtocol: AnyObject {
-    func updateProfile(with profile: Profile)
     func updateAvatar(with urlString: String)
+    func updateProfile(with profile: Profile)
 }
 
 final class ProfileViewController: UIViewController, ProfileViewControllerProtocol {
-   //private let presenter: ProfilePresenterProtocol = ProfilePresenter()
-    //var profileService = ProfileService.shared
-    private var presenter: ProfilePresenterProtocol!
+   //private var presenter: ProfilePresenterProtocol = ProfilePresenter()
+    var profileService = ProfileService.shared
+    var presenter: ProfilePresenterProtocol?
        
      /*  init(presenter: ProfilePresenterProtocol) {
            self.presenter = presenter
@@ -19,6 +19,7 @@ final class ProfileViewController: UIViewController, ProfileViewControllerProtoc
        
        required init?(coder: NSCoder) {
            fatalError("init(coder:) has not been implemented")*/
+    
     func configure(_ presenter: ProfilePresenterProtocol) {
             self.presenter = presenter
             presenter.view = self
@@ -125,6 +126,12 @@ final class ProfileViewController: UIViewController, ProfileViewControllerProtoc
     
     // MARK: - Notification Observers
     
+    func updateProfile(with profile: Profile) {
+        nameLabel.text = profile.name
+        loginNameLabel.text = profile.loginName
+        descriptionLabel.text = profile.bio ?? "No bio available"
+    }
+    
       private func addObserver() {
         NotificationCenter.default.addObserver(
             self,
@@ -212,7 +219,7 @@ final class ProfileViewController: UIViewController, ProfileViewControllerProtoc
         ProfileLogoutService.shared.showLogoutAlert(from: self)
     }
     
-    private func fetchProfileData() {
+    /*private func fetchProfileData() {
         guard let token = OAuth2TokenStorage().token else {
             print("Ошибка: токен отсутствует")
             return
@@ -232,7 +239,7 @@ final class ProfileViewController: UIViewController, ProfileViewControllerProtoc
                 }
             }
         }
-    }
+    }*/
     
     
     private func updateProfileUI(with profile: Profile) {
