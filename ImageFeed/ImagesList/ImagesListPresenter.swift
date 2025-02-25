@@ -27,6 +27,7 @@ final class ImagesListPresenter: ImagesListPresenterProtocol {
     }
     
     func viewDidLoad() {
+        
         imageListObserver = NotificationCenter.default.addObserver(
             forName: ImagesListService.didChangeNotification,
             object: nil,
@@ -49,9 +50,20 @@ final class ImagesListPresenter: ImagesListPresenterProtocol {
     }
     
     func didTapLike(at indexPath: IndexPath) {
-        var photo = photos[indexPath.row]
-        photo.isLiked.toggle()
-        photosList[indexPath.row] = photo
-        view?.reloadCell(at: indexPath)
+        let photo = photos[indexPath.row]
+        
+        imagesListService.changeLike(photoId: photo.id, isLike: !photo.isLiked) { [weak self] result in
+            guard let self = self else { return }
+            switch result {
+            case .success():
+                DispatchQueue.main.async {
+                    self.view?.updateTableView() // Добавляем обновление всей таблицы
+                    self.view?.reloadCell(at: indexPath)
+                }
+            case .failure(let error):
+                print("Ошибка изменения лайка: \(error)")
+            }
+        }
     }
-}
+    }
+

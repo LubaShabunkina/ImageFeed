@@ -11,6 +11,7 @@ final class ProfileViewController: UIViewController, ProfileViewControllerProtoc
    //private var presenter: ProfilePresenterProtocol = ProfilePresenter()
     var profileService = ProfileService.shared
     var presenter: ProfilePresenterProtocol?
+    
        
      /*  init(presenter: ProfilePresenterProtocol) {
            self.presenter = presenter
