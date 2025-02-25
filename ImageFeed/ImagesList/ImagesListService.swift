@@ -13,7 +13,7 @@ protocol ImagesListServiceProtocol {
 }
 
 
-final class ImagesListService {
+final class ImagesListService: ImagesListServiceProtocol {
     static let didChangeNotification = Notification.Name(rawValue: "ImagesListServiceDidChange")
     static let shared = ImagesListService()
     

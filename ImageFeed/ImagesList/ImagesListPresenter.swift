@@ -22,7 +22,7 @@ final class ImagesListPresenter: ImagesListPresenterProtocol {
     
     private var imageListObserver: NSObjectProtocol?
     
-    init(imagesListService: ImagesListServiceProtocol = ImagesListService.shared as! ImagesListServiceProtocol) {
+    init(imagesListService: ImagesListServiceProtocol = ImagesListService.shared) {
         self.imagesListService = imagesListService
     }
     
