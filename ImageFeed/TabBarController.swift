@@ -28,5 +28,11 @@ class TabBarController: UITabBarController {
         // 4. Добавляем в TabBar
         self.viewControllers = [listsViewController, profileViewController]
         
+        profileViewController.tabBarItem = UITabBarItem(
+            title: "",
+            image: UIImage(named: "Stub"),
+            selectedImage: UIImage(named: "Stub")
+        )
+        
     }
 }

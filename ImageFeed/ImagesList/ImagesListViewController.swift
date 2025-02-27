@@ -83,8 +83,6 @@ final class ImagesListViewController: UIViewController, ImagesListViewController
             
             let photo = photos[indexPath.row]
             viewController.imageURL = URL(string: photo.largeImageURL)
-        } else {
-            super.prepare(for: segue, sender: sender)
         }
     }
 }
@@ -123,15 +121,16 @@ extension ImagesListViewController {
 
 extension ImagesListViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-            let photo = photos[indexPath.row]
-            let singleImageVC = SingleImageViewController()
-        singleImageVC.imageURL = URL(string: photo.largeImageURL)
+           //let photo = photos[indexPath.row]
+            //let singleImageVC = SingleImageViewController()
+       // singleImageVC.imageURL = URL(string: photo.largeImageURL)
            // singleImageVC.imageURL = photo.largeImageURL
-            navigationController?.pushViewController(singleImageVC, animated: true)
+            performSegue(withIdentifier: showSingleImageSegueIdentifier, sender: indexPath)
+        }
         }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        let photo = photos[indexPath.row]
+        let photo = presenter.photos[indexPath.row]
         
         let imageInsets = UIEdgeInsets(top: 4, left: 16, bottom: 4, right: 16)
         let imageViewWidth = tableView.bounds.width - imageInsets.left - imageInsets.right
@@ -145,10 +144,7 @@ extension ImagesListViewController: UITableViewDelegate {
             imagesListService.fetchPhotosNextPage()
             
         }*/
-    }
     
-
-
 extension ImagesListViewController: ImagesListCellDelegate {
     
     func imageListCellDidTapLike(_ cell: ImagesListCell) {
