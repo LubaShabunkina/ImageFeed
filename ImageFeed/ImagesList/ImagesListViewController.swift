@@ -38,18 +38,14 @@ final class ImagesListViewController: UIViewController, ImagesListViewController
         
         presenter.view = self
         presenter.viewDidLoad()
+        
         imageListObserver = NotificationCenter.default.addObserver(
             forName: ImagesListService.didChangeNotification,
             object: nil,
             queue: .main
-        ) { [weak self] notification in
+        ) { [weak self] _ in
             guard let self = self else { return }
-            if let updatedPhotos = notification.userInfo?["photos"] as? [Photo] {
-                print("Before update: \(self.photos.count)")
-                self.photos = updatedPhotos
-                print("After update: \(self.photos.count)")
-                self.updateTableView()
-            }
+            self.updateTableView()
         }
         
         imagesListService.fetchPhotosNextPage()
@@ -59,19 +55,21 @@ final class ImagesListViewController: UIViewController, ImagesListViewController
         tableView.reloadRows(at: [indexPath], with: .automatic)
     }
     
-    internal func updateTableView() {
-        let oldCount = tableView.numberOfRows(inSection: 0)
-        let newCount = photos.count
+    func updateTableView() {
+        let oldCount = photos.count // Сохраняем старое значение
+        photos = presenter.photos // Обновляем массив
         
+        let newCount = photos.count
         guard newCount > oldCount else { return }
         
         let newIndexPaths = (oldCount..<newCount).map { IndexPath(row: $0, section: 0) }
-        
-        tableView.performBatchUpdates({
-            tableView.insertRows(at: newIndexPaths, with: .automatic)
-        }, completion: nil)
+
+        DispatchQueue.main.async {
+            self.tableView.performBatchUpdates({
+                self.tableView.insertRows(at: newIndexPaths, with: .automatic)
+            }, completion: nil)
+        }
     }
-    
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == showSingleImageSegueIdentifier {
@@ -125,7 +123,7 @@ extension ImagesListViewController {
 
 extension ImagesListViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-            let photo = presenter.photos[indexPath.row]
+            let photo = photos[indexPath.row]
             let singleImageVC = SingleImageViewController()
         singleImageVC.imageURL = URL(string: photo.largeImageURL)
            // singleImageVC.imageURL = photo.largeImageURL

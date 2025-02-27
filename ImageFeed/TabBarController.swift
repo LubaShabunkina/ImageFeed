@@ -27,5 +27,6 @@ class TabBarController: UITabBarController {
         profilePresenter.view = profileViewController
         // 4. Добавляем в TabBar
         self.viewControllers = [listsViewController, profileViewController]
+        
     }
 }
