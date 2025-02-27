@@ -124,9 +124,13 @@ extension ImagesListViewController {
 }
 
 extension ImagesListViewController: UITableViewDelegate {
-    internal func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        presenter.willDisplayCell(at: indexPath)
-    }
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+            let photo = presenter.photos[indexPath.row]
+            let singleImageVC = SingleImageViewController()
+        singleImageVC.imageURL = URL(string: photo.largeImageURL)
+           // singleImageVC.imageURL = photo.largeImageURL
+            navigationController?.pushViewController(singleImageVC, animated: true)
+        }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         let photo = photos[indexPath.row]

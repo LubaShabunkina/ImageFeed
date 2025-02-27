@@ -57,7 +57,7 @@ final class ImagesListPresenter: ImagesListPresenterProtocol {
             switch result {
             case .success():
                 DispatchQueue.main.async {
-                    self.view?.updateTableView() // Добавляем обновление всей таблицы
+                    self.view?.updateTableView()
                     self.view?.reloadCell(at: indexPath)
                 }
             case .failure(let error):

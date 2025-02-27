@@ -12,7 +12,15 @@ final class ProfileViewController: UIViewController, ProfileViewControllerProtoc
     var profileService = ProfileService.shared
     var presenter: ProfilePresenterProtocol?
     
-       
+    init(presenter: ProfilePresenter) {
+            self.presenter = presenter
+            super.init(nibName: nil, bundle: nil)  // Загружаем без сториборда
+        }
+
+        @available(*, unavailable)  // Запрещаем вызов через сториборд
+        required init?(coder: NSCoder) {
+            fatalError("init(coder:) не поддерживается, используй init(presenter:)")
+        }
      /*  init(presenter: ProfilePresenterProtocol) {
            self.presenter = presenter
            super.init(nibName: nil, bundle: nil)
@@ -109,7 +117,7 @@ final class ProfileViewController: UIViewController, ProfileViewControllerProtoc
     }*/
     // MARK: - Initializers
     
-    override init(nibName: String?, bundle: Bundle?) {
+    /* override init(nibName: String?, bundle: Bundle?) {
         super.init(nibName: nibName, bundle: bundle)
         addObserver()
     }
@@ -121,7 +129,7 @@ final class ProfileViewController: UIViewController, ProfileViewControllerProtoc
     
     deinit {
         removeObserver()
-    }
+    }*/
     
    
     
