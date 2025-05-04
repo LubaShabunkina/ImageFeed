@@ -49,7 +49,7 @@ final class WebViewViewController: UIViewController, WebViewViewControllerProtoc
     }
     
     required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        super.init(coder: coder)
     }
     
     /*   init(webViewHelper: WebViewHelperProtocol = WebViewHelper()) {

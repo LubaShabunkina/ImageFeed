@@ -18,10 +18,10 @@ final class ImagesListViewController: UIViewController, ImagesListViewController
     
     @IBOutlet private var tableView: UITableView!
     
-     var presenter = ImagesListPresenter()
+    var presenter = ImagesListPresenter()
     private let showSingleImageSegueIdentifier = "ShowSingleImage"
     private let imagesListService = ImagesListService()
-    private var photos: [Photo] = []
+    //private var photos: [Photo] = []
     private var imageListObserver: NSObjectProtocol?
     
     private lazy var dateFormatter: DateFormatter = {
@@ -56,10 +56,9 @@ final class ImagesListViewController: UIViewController, ImagesListViewController
     }
     
     func updateTableView() {
-        let oldCount = photos.count // Сохраняем старое значение
-        photos = presenter.photos // Обновляем массив
+        let oldCount = presenter.photos.count
         
-        let newCount = photos.count
+        let newCount = presenter.photos.count
         guard newCount > oldCount else { return }
         
         let newIndexPaths = (oldCount..<newCount).map { IndexPath(row: $0, section: 0) }
@@ -81,7 +80,7 @@ final class ImagesListViewController: UIViewController, ImagesListViewController
                 return
             }
             
-            let photo = photos[indexPath.row]
+            let photo = presenter.photos[indexPath.row]
             viewController.imageURL = URL(string: photo.largeImageURL)
         }
     }
@@ -106,7 +105,7 @@ extension ImagesListViewController: UITableViewDataSource {
 
 extension ImagesListViewController {
     func configCell(for cell: ImagesListCell, with indexPath: IndexPath) {
-        let photo = photos[indexPath.row]
+        let photo = presenter.photos[indexPath.row]
         
         let url = URL(string: photo.largeImageURL)
         cell.setImage(with: url)
@@ -121,13 +120,27 @@ extension ImagesListViewController {
 
 extension ImagesListViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-           //let photo = photos[indexPath.row]
-            //let singleImageVC = SingleImageViewController()
-       // singleImageVC.imageURL = URL(string: photo.largeImageURL)
-           // singleImageVC.imageURL = photo.largeImageURL
-            performSegue(withIdentifier: showSingleImageSegueIdentifier, sender: indexPath)
+        //let photo = photos[indexPath.row]
+        //let singleImageVC = SingleImageViewController()
+        // singleImageVC.imageURL = URL(string: photo.largeImageURL)
+        // singleImageVC.imageURL = photo.largeImageURL
+        performSegue(withIdentifier: showSingleImageSegueIdentifier, sender: indexPath)
+    }
+    
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        if indexPath.row == presenter.photos.count - 1 {
+            imagesListService.fetchPhotosNextPage()
+            
         }
-        }
+    }
+}
+    
+extension ImagesListViewController: ImagesListCellDelegate {
+    
+    func imageListCellDidTapLike(_ cell: ImagesListCell) {
+        guard let indexPath = tableView.indexPath(for: cell) else { return }
+        presenter.didTapLike(at: indexPath)
+    }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         let photo = presenter.photos[indexPath.row]
@@ -137,19 +150,6 @@ extension ImagesListViewController: UITableViewDelegate {
         let scale = imageViewWidth / photo.size.width
         let cellHeight = photo.size.height * scale + imageInsets.top + imageInsets.bottom
         return cellHeight
-    }
-    
-   /* private func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        if indexPath.row == photos.count - 1 {
-            imagesListService.fetchPhotosNextPage()
-            
-        }*/
-    
-extension ImagesListViewController: ImagesListCellDelegate {
-    
-    func imageListCellDidTapLike(_ cell: ImagesListCell) {
-        guard let indexPath = tableView.indexPath(for: cell) else { return }
-        presenter.didTapLike(at: indexPath)
     }
     }
 
