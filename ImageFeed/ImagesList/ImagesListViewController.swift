@@ -12,6 +12,7 @@ import ProgressHUD
 protocol ImagesListViewControllerProtocol: AnyObject {
     func updateTableView()
     func reloadCell(at indexPath: IndexPath)
+    func updateTableView(oldCount: Int)
 }
 
 final class ImagesListViewController: UIViewController, ImagesListViewControllerProtocol {
@@ -20,7 +21,7 @@ final class ImagesListViewController: UIViewController, ImagesListViewController
     
     var presenter = ImagesListPresenter()
     private let showSingleImageSegueIdentifier = "ShowSingleImage"
-    private let imagesListService = ImagesListService()
+   // private let imagesListService = ImagesListService()
     //private var photos: [Photo] = []
     private var imageListObserver: NSObjectProtocol?
     
@@ -39,16 +40,7 @@ final class ImagesListViewController: UIViewController, ImagesListViewController
         presenter.view = self
         presenter.viewDidLoad()
         
-        imageListObserver = NotificationCenter.default.addObserver(
-            forName: ImagesListService.didChangeNotification,
-            object: nil,
-            queue: .main
-        ) { [weak self] _ in
-            guard let self = self else { return }
-            self.updateTableView()
-        }
-        
-        imagesListService.fetchPhotosNextPage()
+       // imagesListService.fetchPhotosNextPage()
     }
     
     func reloadCell(at indexPath: IndexPath) {
@@ -56,17 +48,17 @@ final class ImagesListViewController: UIViewController, ImagesListViewController
     }
     
     func updateTableView() {
-        let oldCount = presenter.photos.count
-        
+        tableView.reloadData()
+    }
+
+    func updateTableView(oldCount: Int) {
         let newCount = presenter.photos.count
         guard newCount > oldCount else { return }
-        
+
         let newIndexPaths = (oldCount..<newCount).map { IndexPath(row: $0, section: 0) }
 
-        DispatchQueue.main.async {
-            self.tableView.performBatchUpdates({
-                self.tableView.insertRows(at: newIndexPaths, with: .automatic)
-            }, completion: nil)
+        tableView.performBatchUpdates {
+            tableView.insertRows(at: newIndexPaths, with: .automatic)
         }
     }
     
@@ -129,7 +121,7 @@ extension ImagesListViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         if indexPath.row == presenter.photos.count - 1 {
-            imagesListService.fetchPhotosNextPage()
+            presenter.willDisplayCell(at: indexPath)
             
         }
     }

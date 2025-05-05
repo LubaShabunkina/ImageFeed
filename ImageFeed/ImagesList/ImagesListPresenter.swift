@@ -1,5 +1,6 @@
 
 import Foundation
+import UIKit
 
 protocol ImagesListPresenterProtocol {
     var view: ImagesListViewControllerProtocol? { get set }
@@ -8,9 +9,19 @@ protocol ImagesListPresenterProtocol {
     func viewDidLoad()
     func willDisplayCell(at indexPath: IndexPath)
     func didTapLike(at indexPath: IndexPath)
+    func updateTableView(oldCount: Int)
+    func reloadCell(at indexPath: IndexPath)
 }
 
 final class ImagesListPresenter: ImagesListPresenterProtocol {
+    
+    func updateTableView(oldCount: Int) {
+        view?.updateTableView(oldCount: oldCount)
+    }
+
+    func reloadCell(at indexPath: IndexPath) {
+        view?.reloadCell(at: indexPath)
+    }
     weak var view: ImagesListViewControllerProtocol?
     
     private let imagesListService: ImagesListServiceProtocol
@@ -29,19 +40,20 @@ final class ImagesListPresenter: ImagesListPresenterProtocol {
     func viewDidLoad() {
         
         imageListObserver = NotificationCenter.default.addObserver(
-            forName: ImagesListService.didChangeNotification,
-            object: nil,
-            queue: .main
-        ) { [weak self] notification in
-            guard let self = self else { return }
-            if let updatedPhotos = notification.userInfo?["photos"] as? [Photo] {
-                self.photosList = updatedPhotos
-                self.view?.updateTableView()
+                forName: ImagesListService.didChangeNotification,
+                object: nil,
+                queue: .main
+            ) { [weak self] notification in
+                guard let self = self else { return }
+                let oldCount = self.photosList.count
+                if let updatedPhotos = notification.userInfo?["photos"] as? [Photo] {
+                    self.photosList = updatedPhotos
+                    self.view?.updateTableView(oldCount: oldCount)
+                }
             }
+
+            imagesListService.fetchPhotosNextPage()
         }
-        
-        imagesListService.fetchPhotosNextPage()
-    }
     
     func willDisplayCell(at indexPath: IndexPath) {
         if indexPath.row == photos.count - 1 {
