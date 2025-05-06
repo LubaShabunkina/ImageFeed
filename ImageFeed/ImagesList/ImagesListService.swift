@@ -37,7 +37,7 @@ final class ImagesListService: ImagesListServiceProtocol {
     
     func fetchPhotosNextPage() {
         guard !isLoading else { return }
-    
+        NotificationCenter.default.post(name: ImagesListService.didChangeNotification, object: self)
         guard let token = tokenStorage.token else {
             print("Ошибка: отсутствует токен")
             return
