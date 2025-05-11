@@ -32,12 +32,12 @@ final class ImagesListService: ImagesListServiceProtocol {
     }
     
     func clearPhotos() {
-            photos.removeAll()
-        }
+        photos.removeAll()
+    }
     
     func fetchPhotosNextPage() {
         guard !isLoading else { return }
-        NotificationCenter.default.post(name: ImagesListService.didChangeNotification, object: self)
+       // NotificationCenter.default.post(name: ImagesListService.didChangeNotification, object: self)
         guard let token = tokenStorage.token else {
             print("Ошибка: отсутствует токен")
             return
@@ -87,7 +87,7 @@ final class ImagesListService: ImagesListServiceProtocol {
                     NotificationCenter.default.post(
                         name: ImagesListService.didChangeNotification,
                         object: nil,
-                        userInfo: ["photos": self.photos] // Передаем обновленный массив
+                        userInfo: ["photos": self.photos]
                     )
                 }
             } catch {

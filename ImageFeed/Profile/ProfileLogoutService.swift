@@ -33,21 +33,20 @@ final class ProfileLogoutService {
     }
     
     private func clearProfileData() {
-        // Очищаем профильные данные
     }
     
-     func showLogoutAlert (from viewController: UIViewController) {
+    func showLogoutAlert (from viewController: UIViewController) {
         let alert = UIAlertController(title: "Пока, пока!", message: "Уверены что хотите выйти?", preferredStyle: .alert)
-            
-            let logoutAction = UIAlertAction(title: "Да", style: .destructive) { _ in
-                ProfileLogoutService.shared.logout()
-            }
-            
-            let cancelAction = UIAlertAction(title: "Отмена", style: .cancel)
-            
-            alert.addAction(logoutAction)
-            alert.addAction(cancelAction)
-            
+        
+        let logoutAction = UIAlertAction(title: "Да", style: .destructive) { _ in
+            ProfileLogoutService.shared.logout()
+        }
+        
+        let cancelAction = UIAlertAction(title: "Отмена", style: .cancel)
+        
+        alert.addAction(logoutAction)
+        alert.addAction(cancelAction)
+        
         viewController.present(alert, animated: true)
     }
 }

@@ -9,15 +9,12 @@
 import UIKit
 @preconcurrency import WebKit
 
-/*enum WebViewConstants {
-    static let unsplashAuthorizeURLString = "https://unsplash.com/oauth/authorize"
-}*/
 public protocol WebViewViewControllerProtocol: AnyObject {
     var presenter: WebViewPresenterProtocol? { get set }
     
-        func load(request: URLRequest)
-        func setProgressValue(_ newValue: Float)
-        func setProgressHidden(_ isHidden: Bool)
+    func load(request: URLRequest)
+    func setProgressValue(_ newValue: Float)
+    func setProgressHidden(_ isHidden: Bool)
 }
 
 protocol WebViewViewControllerDelegate: AnyObject {
@@ -52,59 +49,34 @@ final class WebViewViewController: UIViewController, WebViewViewControllerProtoc
         super.init(coder: coder)
     }
     
-    /*   init(webViewHelper: WebViewHelperProtocol = WebViewHelper()) {
-           self.webViewHelper = webViewHelper
-           super.init(nibName: nil, bundle: nil)
-       }
-    
-    required init?(coder: NSCoder) {
-            self.webViewHelper = WebViewHelper() // <-- По умолчанию используем обычный WebViewHelper
-            super.init(coder: coder)
-        }
-     */
     // MARK: - Overrides Methods
     
     override func viewDidLoad() {
         super.viewDidLoad()
         print("WebViewViewController loaded")
-        //loadAuthView()
         webView.navigationDelegate = self
         presenter?.viewDidLoad()
-        //updateProgress()
         
-        // Настройка KVO для наблюдения за estimatedProgress
-                estimatedProgressObservation = webView.observe(
-                    \.estimatedProgress,
-                    options: [],
-                    changeHandler: { [weak self] _, _ in
-                     // self?.updateProgress()
-                    }
-                )
-            }
+        estimatedProgressObservation = webView.observe(
+            \.estimatedProgress,
+             options: [],
+             changeHandler: { [weak self] _, _ in
+                 
+             }
+        )
+    }
     
     override func viewWillDisappear(_ animated: Bool) {
-           super.viewWillDisappear(animated)
-           estimatedProgressObservation = nil // Отключение наблюдения
-       }
+        super.viewWillDisappear(animated)
+        estimatedProgressObservation = nil
+    }
     
     // MARK: - Private Methods
     
-   /* private func loadAuthView() {
-            guard let request = webViewHelper.makeAuthRequest() else {
-                print("Ошибка: не удалось создать запрос авторизации.")
-                return
-            }
-            webView.load(request)
-        }*/
-    
-  /*  private func updateProgress() {
-        progressView.progress = Float(webView.estimatedProgress)
-        progressView.isHidden = fabs(webView.estimatedProgress - 1.0) <= 0.0001
-    }*/
     func setProgressValue(_ newValue: Float) {
         progressView.progress = newValue
     }
-
+    
     func setProgressHidden(_ isHidden: Bool) {
         progressView.isHidden = isHidden
     }
@@ -140,17 +112,4 @@ extension WebViewViewController: WKNavigationDelegate {
         }
         return nil
     }
-   /* private func code(from navigationAction: WKNavigationAction) -> String? {
-        if
-            let url = navigationAction.request.url,
-            let urlComponents = URLComponents(string: url.absoluteString),
-            urlComponents.path == "/oauth/authorize/native",
-            let items = urlComponents.queryItems,
-            let codeItem = items.first(where: { $0.name == "code" })
-        {
-            return codeItem.value
-        } else {
-            return nil
-        }
-    }*/
 }

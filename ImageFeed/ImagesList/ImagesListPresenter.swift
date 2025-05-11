@@ -1,6 +1,6 @@
 
 import Foundation
-import UIKit
+
 
 protocol ImagesListPresenterProtocol {
     var view: ImagesListViewControllerProtocol? { get set }
@@ -26,7 +26,6 @@ final class ImagesListPresenter: ImagesListPresenterProtocol {
     
     private let imagesListService: ImagesListServiceProtocol
     private var previousPhotosCount: Int = 0
-    //private var photosList: [Photo] = []
     var photos: [Photo] {
         return imagesListService.photos
     }
@@ -40,19 +39,19 @@ final class ImagesListPresenter: ImagesListPresenterProtocol {
     func viewDidLoad() {
         
         imageListObserver = NotificationCenter.default.addObserver(
-               forName: ImagesListService.didChangeNotification,
-               object: nil,
-               queue: .main
-           ) { [weak self] _ in
-               guard let self = self else { return }
-               let newCount = self.photos.count
-               let oldCount = self.previousPhotosCount
-               self.previousPhotosCount = newCount
-               self.view?.updateTableView(oldCount: oldCount)
-           }
-
-           previousPhotosCount = photos.count
-           imagesListService.fetchPhotosNextPage()
+            forName: ImagesListService.didChangeNotification,
+            object: nil,
+            queue: .main
+        ) { [weak self] _ in
+            guard let self = self else { return }
+            let newCount = self.photos.count
+            let oldCount = self.previousPhotosCount
+            self.previousPhotosCount = newCount
+            self.view?.updateTableView(oldCount: oldCount)
+        }
+        
+        previousPhotosCount = photos.count
+        imagesListService.fetchPhotosNextPage()
         
     }
     func willDisplayCell(at indexPath: IndexPath) {

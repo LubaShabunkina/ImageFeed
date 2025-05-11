@@ -8,32 +8,25 @@ protocol ProfileViewControllerProtocol: AnyObject {
 }
 
 final class ProfileViewController: UIViewController, ProfileViewControllerProtocol {
-   //private var presenter: ProfilePresenterProtocol = ProfilePresenter()
+    //private var presenter: ProfilePresenterProtocol = ProfilePresenter()
     var profileService = ProfileService.shared
     var presenter: ProfilePresenterProtocol?
     
     init(presenter: ProfilePresenter) {
-            self.presenter = presenter
-            super.init(nibName: nil, bundle: nil)  // Загружаем без сториборда
-        }
-
-        @available(*, unavailable)  // Запрещаем вызов через сториборд
-        required init?(coder: NSCoder) {
-            fatalError("init(coder:) не поддерживается, используй init(presenter:)")
-        }
-     /*  init(presenter: ProfilePresenterProtocol) {
-           self.presenter = presenter
-           super.init(nibName: nil, bundle: nil)
-       }
-       
-       required init?(coder: NSCoder) {
-           fatalError("init(coder:) has not been implemented")*/
+        self.presenter = presenter
+        super.init(nibName: nil, bundle: nil)  // Загружаем без сториборда
+    }
+    
+    @available(*, unavailable)  // Запрещаем вызов через сториборд
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) не поддерживается, используй init(presenter:)")
+    }
     
     func configure(_ presenter: ProfilePresenterProtocol) {
-            self.presenter = presenter
+        self.presenter = presenter
         self.presenter?.view = self
-        }
-   
+    }
+    
     private lazy var avatarImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
@@ -103,36 +96,8 @@ final class ProfileViewController: UIViewController, ProfileViewControllerProtoc
         avatarImageView.layer.masksToBounds = true
         assert(presenter != nil, "ProfilePresenter не был сконфигурирован")
         presenter?.viewDidLoad()
-    }
-    
-   /*/ override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        
-        let path = UIBezierPath(roundedRect: avatarImageView.bounds,
-                                byRoundingCorners: [.topLeft],
-                                cornerRadii: CGSize(width: 61, height: 61))
-        let mask = CAShapeLayer()
-        mask.path = path.cgPath
-        avatarImageView.layer.mask = mask
-    }*/
-    // MARK: - Initializers
-    
-    /* override init(nibName: String?, bundle: Bundle?) {
-        super.init(nibName: nibName, bundle: bundle)
         addObserver()
     }
-    
-    required init?(coder: NSCoder) {
-        super.init(coder: coder)
-        addObserver()
-    }
-    
-    deinit {
-        removeObserver()
-    }*/
-    
-   
-    
     // MARK: - Notification Observers
     
     func updateProfile(with profile: Profile) {
@@ -141,7 +106,7 @@ final class ProfileViewController: UIViewController, ProfileViewControllerProtoc
         descriptionLabel.text = profile.bio ?? "No bio available"
     }
     
-      private func addObserver() {
+    private func addObserver() {
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(updateAvatar(notification:)),
@@ -227,29 +192,6 @@ final class ProfileViewController: UIViewController, ProfileViewControllerProtoc
     private func showLogoutAlert() {
         ProfileLogoutService.shared.showLogoutAlert(from: self)
     }
-    
-    /*private func fetchProfileData() {
-        guard let token = OAuth2TokenStorage().token else {
-            print("Ошибка: токен отсутствует")
-            return
-        }
-        
-        profileService.fetchProfile(token) { [weak self] result in
-            DispatchQueue.main.async {
-                switch result {
-                case .success(let profile):
-                    self?.updateProfileUI(with: profile)
-                    
-                    // После успешной загрузки профиля запрашиваем URL аватарки
-                    self?.fetchProfileImageURL(for: profile.username)
-                    
-                case .failure(let error):
-                    print("Ошибка загрузки профиля: \(error.localizedDescription)")
-                }
-            }
-        }
-    }*/
-    
     
     private func updateProfileUI(with profile: Profile) {
         nameLabel.text = profile.name

@@ -21,8 +21,6 @@ final class ImagesListViewController: UIViewController, ImagesListViewController
     
     var presenter = ImagesListPresenter()
     private let showSingleImageSegueIdentifier = "ShowSingleImage"
-   // private let imagesListService = ImagesListService()
-    //private var photos: [Photo] = []
     private var imageListObserver: NSObjectProtocol?
     
     private lazy var dateFormatter: DateFormatter = {
@@ -40,7 +38,6 @@ final class ImagesListViewController: UIViewController, ImagesListViewController
         presenter.view = self
         presenter.viewDidLoad()
         
-       // imagesListService.fetchPhotosNextPage()
     }
     
     func reloadCell(at indexPath: IndexPath) {
@@ -50,13 +47,13 @@ final class ImagesListViewController: UIViewController, ImagesListViewController
     func updateTableView() {
         tableView.reloadData()
     }
-
+    
     func updateTableView(oldCount: Int) {
         let newCount = presenter.photos.count
         guard newCount > oldCount else { return }
-
+        
         let newIndexPaths = (oldCount..<newCount).map { IndexPath(row: $0, section: 0) }
-
+        
         tableView.performBatchUpdates {
             tableView.insertRows(at: newIndexPaths, with: .automatic)
         }
@@ -112,10 +109,6 @@ extension ImagesListViewController {
 
 extension ImagesListViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        //let photo = photos[indexPath.row]
-        //let singleImageVC = SingleImageViewController()
-        // singleImageVC.imageURL = URL(string: photo.largeImageURL)
-        // singleImageVC.imageURL = photo.largeImageURL
         performSegue(withIdentifier: showSingleImageSegueIdentifier, sender: indexPath)
     }
     
@@ -126,7 +119,7 @@ extension ImagesListViewController: UITableViewDelegate {
         }
     }
 }
-    
+
 extension ImagesListViewController: ImagesListCellDelegate {
     
     func imageListCellDidTapLike(_ cell: ImagesListCell) {
@@ -143,6 +136,6 @@ extension ImagesListViewController: ImagesListCellDelegate {
         let cellHeight = photo.size.height * scale + imageInsets.top + imageInsets.bottom
         return cellHeight
     }
-    }
+}
 
 

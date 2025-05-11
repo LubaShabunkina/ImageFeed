@@ -201,6 +201,7 @@
                             </imageView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MSK-6K-Xqe">
                                 <rect key="frame" x="16" y="724" width="382" height="48"/>
+                                <accessibility key="accessibilityConfiguration" identifier="Authenticate"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="48" id="aXX-2h-ngB"/>
                                 </constraints>
