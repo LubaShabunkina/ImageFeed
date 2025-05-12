@@ -8,16 +8,15 @@ protocol ProfileViewControllerProtocol: AnyObject {
 }
 
 final class ProfileViewController: UIViewController, ProfileViewControllerProtocol {
-    //private var presenter: ProfilePresenterProtocol = ProfilePresenter()
     var profileService = ProfileService.shared
     var presenter: ProfilePresenterProtocol?
     
     init(presenter: ProfilePresenter) {
         self.presenter = presenter
-        super.init(nibName: nil, bundle: nil)  // Загружаем без сториборда
+        super.init(nibName: nil, bundle: nil)
     }
     
-    @available(*, unavailable)  // Запрещаем вызов через сториборд
+    @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("init(coder:) не поддерживается, используй init(presenter:)")
     }
@@ -79,6 +78,7 @@ final class ProfileViewController: UIViewController, ProfileViewControllerProtoc
     private lazy var logoutButton: UIButton = {
         let button = UIButton(type: .system)
         button.translatesAutoresizingMaskIntoConstraints = false
+        button.accessibilityIdentifier = "logout button"
         button.setImage(UIImage(named: "Exit"), for: .normal)
         button.tintColor = UIColor(named: "YP Red")
         button.addTarget(self, action: #selector(didTapLogoutButton), for: .touchUpInside)
@@ -91,8 +91,6 @@ final class ProfileViewController: UIViewController, ProfileViewControllerProtoc
         super.viewDidLoad()
         view.backgroundColor = UIColor(named: "YP Black")
         setupLayout()
-        //fetchProfileData()
-        //avatarImageView.layer.cornerRadius = 35
         avatarImageView.layer.masksToBounds = true
         assert(presenter != nil, "ProfilePresenter не был сконфигурирован")
         presenter?.viewDidLoad()

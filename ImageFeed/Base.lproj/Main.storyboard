@@ -41,6 +41,7 @@
                                                 </imageView>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="C7n-RG-ksx" userLabel="Like Button">
                                                     <rect key="frame" x="354" y="4" width="44" height="44"/>
+                                                    <accessibility key="accessibilityConfiguration" identifier="like button off"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="44" id="7TM-A7-pwd"/>
                                                         <constraint firstAttribute="width" constant="44" id="Qrw-cM-VNR"/>
