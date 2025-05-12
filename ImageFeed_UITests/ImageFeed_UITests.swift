@@ -43,7 +43,7 @@ final class Image_FeedUITests: XCTestCase {
         passwordTextField.tap()
         
         // Вводим пароль
-        passwordTextField.typeText("Iecnh25")
+        passwordTextField.typeText("abc123")
         
         // Нажимаем на кнопку входа
         let loginButton = webView.descendants(matching: .button).element(boundBy: 0)
