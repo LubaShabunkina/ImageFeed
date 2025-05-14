@@ -7,55 +7,44 @@ final class Image_FeedUITests: XCTestCase {
         continueAfterFailure = false
         app.launch()
     }
-
         
-        func testAuth() throws {
+    func testAuth() throws {
             // Нажимаем кнопку "Войти"
             app.buttons["Войти"].tap()
-            
-            // Ждем появления WebView
+
+            // Ждём появления WebView
             let webView = app.webViews["UnsplashWebView"]
             XCTAssertTrue(webView.waitForExistence(timeout: 30), "WebView не загрузился")
-            
+
             // Вводим логин
             let loginTextField = webView.textFields.element
             XCTAssertTrue(loginTextField.waitForExistence(timeout: 10), "Поле логина не найдено")
             loginTextField.tap()
-            loginTextField.typeText("test@example.com")
-            
-            // Жмем "Go" на клавиатуре, чтобы закрыть её
-            if app.keyboards.buttons["Go"].exists {
-                app.keyboards.buttons["Go"].tap()
-            } else if app.keyboards.buttons["go"].exists {
-                app.keyboards.buttons["go"].tap()
-            } else {
-                XCTFail("Кнопка Go не найдена на клавиатуре")
-            }
-            
-            // Прокручиваем вверх, чтобы увидеть поле пароля
-            webView.swipeUp()
-            sleep(1)
-            
+            loginTextField.typeText("shabunkina.l@gmail.com")
+
+            // Закрываем клавиатуру
+            XCTAssertTrue(app.buttons["Done"].waitForExistence(timeout: 5), "Кнопка Done не найдена")
+            app.buttons["Done"].tap()
+
             // Вводим пароль
             let passwordTextField = webView.secureTextFields.element
             XCTAssertTrue(passwordTextField.waitForExistence(timeout: 10), "Поле пароля не найдено")
             passwordTextField.tap()
-            passwordTextField.typeText("password123")
-            
-            // Прокручиваем вверх, чтобы увидеть кнопку логина
-            webView.swipeUp()
-            sleep(1)
-            
-            // Нажимаем на кнопку входа
-            let loginButton = webView.buttons.element(boundBy: 0)
-            XCTAssertTrue(loginButton.waitForExistence(timeout: 10), "Кнопка входа не найдена")
-            loginButton.tap()
-            
+            passwordTextField.typeText("Iecnh256!")
+
+            // Закрываем клавиатуру (вдруг опять вылезла)
+            if app.buttons["Done"].exists {
+                app.buttons["Done"].tap()
+            }
+
+            // Нажимаем кнопку логина
+            XCTAssertTrue(webView.buttons["Login"].waitForExistence(timeout: 10), "Кнопка логина не найдена")
+            webView.buttons["Login"].tap()
+
             // Проверяем, что загрузилась лента
             let cell = app.tables.cells.element(boundBy: 0)
             XCTAssertTrue(cell.waitForExistence(timeout: 15), "Лента не загрузилась")
         }
-    
     
     func testFeed() throws {
         let tablesQuery = app.tables
