@@ -29,6 +29,7 @@ final class ImagesListCell: UITableViewCell {
     
     @IBAction private func likeButtonClicked(_ sender: UIButton) {
         delegate?.imageListCellDidTapLike(self)
+        
     }
     
     weak var delegate: ImagesListCellDelegate?
@@ -37,7 +38,7 @@ final class ImagesListCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         
-        likeButton.setImage(UIImage(named: "NoActive"), for: .normal)  
+        likeButton.setImage(UIImage(named: "NoActive"), for: .normal)
         likeButton.setImage(UIImage(named: "ActiveLike"), for: .selected)
     }
     
@@ -51,11 +52,13 @@ final class ImagesListCell: UITableViewCell {
     
     func setIsLiked(_ isLiked: Bool) {
         likeButton.isSelected = isLiked
+        likeButton.accessibilityIdentifier = isLiked ? "like button on" : "like button off"
     }
-        func configure(with model: ImagesListCellModel) {
-            setImage(with: model.imageURL)
-            dateLabel.text = model.date
-            setIsLiked(model.isLiked)
-        }
+    
+    func configure(with model: ImagesListCellModel) {
+        setImage(with: model.imageURL)
+        dateLabel.text = model.date
+        setIsLiked(model.isLiked)
     }
+}
 

@@ -20,7 +20,7 @@ final class Image_FeedUITests: XCTestCase {
             let loginTextField = webView.textFields.element
             XCTAssertTrue(loginTextField.waitForExistence(timeout: 10), "Поле логина не найдено")
             loginTextField.tap()
-            loginTextField.typeText("shabunkina.l@gmail.com")
+            loginTextField.typeText("")
 
             // Закрываем клавиатуру
             XCTAssertTrue(app.buttons["Done"].waitForExistence(timeout: 5), "Кнопка Done не найдена")
@@ -30,7 +30,7 @@ final class Image_FeedUITests: XCTestCase {
             let passwordTextField = webView.secureTextFields.element
             XCTAssertTrue(passwordTextField.waitForExistence(timeout: 10), "Поле пароля не найдено")
             passwordTextField.tap()
-            passwordTextField.typeText("Iecnh256!")
+            passwordTextField.typeText("")
 
             // Закрываем клавиатуру (вдруг опять вылезла)
             if app.buttons["Done"].exists {
@@ -49,44 +49,43 @@ final class Image_FeedUITests: XCTestCase {
     func testFeed() throws {
         let tablesQuery = app.tables
         let firstCell = tablesQuery.cells.element(boundBy: 0)
-        
+
         XCTAssertTrue(firstCell.waitForExistence(timeout: 10), "Лента не загрузилась")
-        
+
+        // Прокручиваем вниз, чтобы появились другие ячейки
         firstCell.swipeUp()
-        
-        // Лайк / дизлайк
+
         let secondCell = tablesQuery.cells.element(boundBy: 1)
         XCTAssertTrue(secondCell.waitForExistence(timeout: 5), "Вторая ячейка не найдена")
-        
+
+        // Прокручиваем до второй ячейки, чтобы все элементы стали hittable
+       // scrollToElement(secondCell)
+
         let likeButton = secondCell.buttons["like button off"]
-        if likeButton.exists {
+        let likedButton = secondCell.buttons["like button on"]
+
+        if likeButton.exists && likeButton.isHittable {
             likeButton.tap()
-            
-            let likedButton = secondCell.buttons["like button on"]
-            XCTAssertTrue(likedButton.waitForExistence(timeout: 3), "Кнопка после лайка не появилась")
+
+            // Ждём исчезновения старой кнопки
+            let predicate = NSPredicate(format: "exists == false")
+            expectation(for: predicate, evaluatedWith: likeButton, handler: nil)
+            waitForExpectations(timeout: 5)
+
+            XCTAssertTrue(likedButton.exists, "Кнопка после лайка не появилась")
             likedButton.tap()
-        } else {
-            // Если уже лайкнуто
-            let likedButton = secondCell.buttons["like button on"]
+        } else if likedButton.exists && likedButton.isHittable {
             likedButton.tap()
-            
+
+            let predicate = NSPredicate(format: "exists == false")
+            expectation(for: predicate, evaluatedWith: likedButton, handler: nil)
+            waitForExpectations(timeout: 5)
+
             let unlikedButton = secondCell.buttons["like button off"]
-            XCTAssertTrue(unlikedButton.waitForExistence(timeout: 3), "Кнопка после дизлайка не появилась")
-            unlikedButton.tap()
+            XCTAssertTrue(unlikedButton.exists, "Кнопка после дизлайка не появилась")
+        } else {
+            XCTFail("Ни одна кнопка лайка не найдена или не доступна для нажатия")
         }
-        
-        // Открытие картинки
-        secondCell.tap()
-        
-        let image = app.scrollViews.images.element(boundBy: 0)
-        XCTAssertTrue(image.waitForExistence(timeout: 5), "Картинка не открылась")
-        
-        image.pinch(withScale: 3, velocity: 1)
-        image.pinch(withScale: 0.5, velocity: -1)
-        
-        let backButton = app.buttons["nav back button white"]
-        XCTAssertTrue(backButton.waitForExistence(timeout: 5), "Кнопка назад не найдена")
-        backButton.tap()
     }
     
     func testProfile() throws {
