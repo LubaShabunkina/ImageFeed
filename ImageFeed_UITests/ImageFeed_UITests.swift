@@ -20,7 +20,7 @@ final class Image_FeedUITests: XCTestCase {
             let loginTextField = webView.textFields.element
             XCTAssertTrue(loginTextField.waitForExistence(timeout: 10), "Поле логина не найдено")
             loginTextField.tap()
-            loginTextField.typeText("")
+            loginTextField.typeText("shabunkina.l@gmail.com")
 
             // Закрываем клавиатуру
             XCTAssertTrue(app.buttons["Done"].waitForExistence(timeout: 5), "Кнопка Done не найдена")
@@ -30,7 +30,7 @@ final class Image_FeedUITests: XCTestCase {
             let passwordTextField = webView.secureTextFields.element
             XCTAssertTrue(passwordTextField.waitForExistence(timeout: 10), "Поле пароля не найдено")
             passwordTextField.tap()
-            passwordTextField.typeText("")
+            passwordTextField.typeText("Iecnh256!")
 
             // Закрываем клавиатуру (вдруг опять вылезла)
             if app.buttons["Done"].exists {
